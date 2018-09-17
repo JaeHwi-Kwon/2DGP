@@ -30,10 +30,10 @@ def mov_character(x, y, desx, desy):
             y = mov_up(y)
         clear_canvas()
         grass.draw(400,30)
-        character.clip_draw(frame*100,destination,100,100,x,y)
+        character.clip_draw((int)(frame)*100,destination,100,100,x,y)
         update_canvas()
-        frame = (frame + 1) % 8
-        delay(0.02)
+        frame = (frame + 0.25) % 8
+        delay(0.01)
         get_events()
 
 
@@ -42,16 +42,16 @@ def mov_character_by_route():
     def mov_character_from_to(x, y, desx, desy):
         mov_character(x, y, desx, desy)
 
-    #mov_character_from_to(203, 535, 132, 243)
+    mov_character_from_to(203, 535, 132, 243)
     mov_character_from_to(132, 243, 535, 470)
-    #mov_character_from_to(535, 470, 477, 203)
-    #mov_character_from_to(477, 203, 715, 136)
-    #mov_character_from_to(715, 136, 316, 225)
-    #mov_character_from_to(316, 225, 510, 92)
-    #mov_character_from_to(510, 92, 692, 518)
-    #mov_character_from_to(692, 518, 682, 336)
-    #mov_character_from_to(682, 336, 712, 349)
-    #mov_character_from_to(712, 349, 203, 535)
+    mov_character_from_to(535, 470, 477, 203)
+    mov_character_from_to(477, 203, 715, 136)
+    mov_character_from_to(715, 136, 316, 225)
+    mov_character_from_to(316, 225, 510, 92)
+    mov_character_from_to(510, 92, 692, 518)
+    mov_character_from_to(692, 518, 682, 336)
+    mov_character_from_to(682, 336, 712, 349)
+    mov_character_from_to(712, 349, 203, 535)
     pass
 
 
