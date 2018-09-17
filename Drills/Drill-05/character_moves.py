@@ -10,7 +10,7 @@ def mov_character(x, y, desx, desy):
     def mov_right(x):
         return x + 1
     def mov_up(y):
-        pass
+        return y + 1
     def mov_down(y):
         return y - 1
 
