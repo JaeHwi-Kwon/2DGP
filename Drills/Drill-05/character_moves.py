@@ -8,7 +8,7 @@ def mov_character(x, y, desx, desy):
     def mov_left(x):
         return x - 1
     def mov_right(x):
-        pass
+        return x + 1
     def mov_up(y):
         pass
     def mov_down(y):
@@ -42,8 +42,8 @@ def mov_character_by_route():
     def mov_character_from_to(x, y, desx, desy):
         mov_character(x, y, desx, desy)
 
-    mov_character_from_to(203, 535, 132, 243)
-    #mov_character_from_to(132, 243, 535, 470)
+    #mov_character_from_to(203, 535, 132, 243)
+    mov_character_from_to(132, 243, 535, 470)
     #mov_character_from_to(535, 470, 477, 203)
     #mov_character_from_to(477, 203, 715, 136)
     #mov_character_from_to(715, 136, 316, 225)
