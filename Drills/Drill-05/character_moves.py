@@ -12,7 +12,7 @@ def mov_character(x, y, desx, desy):
     def mov_up(y):
         pass
     def mov_down(y):
-        pass
+        return y - 1
 
     frame = 0
     destination = 0
