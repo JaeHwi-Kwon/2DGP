@@ -14,6 +14,27 @@ def mov_character(x, y, desx, desy):
     def mov_down(x, y, desx, desy):
         pass
 
+    frame = 0
+    destination = 0
+    while x != desx and y != desy:
+        if x > desx:
+            mov_left(x,y,desx,desy)
+            destination = 0
+        elif x < desx:
+            mov_right(x,y,desx,desy)
+            destination = 100
+        if y > desy:
+            mov_down(x,y,desx,desy)
+        elif y < desy:
+            mov_up(x,y,desx,desy)
+        clear_canvas()
+        grass.draw(400,30)
+        character.clip_draw(frame*100,destination,100,100,x,y)
+        update_canvas()
+        frame = (frame + 1) % 8
+        delay(0.05)
+        get_events()
+
 
 def mov_character_by_route():
 
