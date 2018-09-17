@@ -3,6 +3,7 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('animation_sheet.png')
 
+
 def mov_character_by_route():
 
     def mov_character_from_to(x, y, desx, desy):
@@ -50,7 +51,6 @@ def mov_character_by_route():
     mov_character_from_to(692, 518, 682, 336)
     mov_character_from_to(682, 336, 712, 349)
     mov_character_from_to(712, 349, 203, 535)
-    pass
 
 
 while True:
