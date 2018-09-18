@@ -2,10 +2,14 @@ from pico2d import*
 
 KPU_WIDTH, KPU_HEIGHT = 1280,1024
 
+def move_character(x,y,characterx,charactery):
+    pass
+
 def handle_events():
     global running
     global x,y
     global dir
+    global characterx,charactery
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -14,6 +18,8 @@ def handle_events():
             x, y = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.key == SDL_BUTTON_LEFT:
+            move_character(x,y,characterx,charactery)
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
 kpu_ground = load_image('KPU_GROUND.png')
