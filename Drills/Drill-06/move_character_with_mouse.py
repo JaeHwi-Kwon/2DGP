@@ -3,7 +3,15 @@ from pico2d import*
 KPU_WIDTH, KPU_HEIGHT = 1280,1024
 
 def move_character(x,y,characterx,charactery):
-    pass
+    while character != x and character != y:
+        if characterx < x:
+            characterx += 1
+        elif character > x:
+            characterx -= 1
+        if charactery < y:
+            charactery += 1
+        elif charactery > y:
+            charactery -= 1
 
 def handle_events():
     global running
@@ -18,7 +26,8 @@ def handle_events():
             x, y = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif event.type == SDL_MOUSEBUTTONDOWN and event.key == SDL_BUTTON_LEFT:
+        elif event.type == SDL_MOUSEBUTTONUP and event.key == SDL_BUTTON_LEFT:
+            x,y = event.x, KPU_HEIGHT - 1 - event.y
             move_character(x,y,characterx,charactery)
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
