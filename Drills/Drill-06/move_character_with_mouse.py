@@ -43,11 +43,11 @@ dir = 0
 hide_cursor()
 while running:
     clear_canvas()
-    kpu_ground.draw(KPU_WIDTH //2, KPU_HEIGHT //2)
-    character.clip_draw(frame*100,100*dir,100,100,characterx,charactery)
+    kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
+    character.clip_draw(frame * 100, 100 * dir, 100, 100, characterx, charactery)
     cursor.draw(x, y)
     update_canvas()
-    frame = (frame+1) % 8
+    frame = (frame + 1) % 8
 
     delay(0.02)
     handle_events()
