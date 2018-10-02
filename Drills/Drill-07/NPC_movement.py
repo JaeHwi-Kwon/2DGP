@@ -10,20 +10,19 @@ background = load_image('KPU_GROUND.png')
 def move_by_line(p1,p2):
 
     x,y=p1[0],p1[1]
-    while x!=p2[0] and y!=p2[1] and running:
-        for i in range(1,100,2):
-            t=i/100
-            x = (1 - t) * p1[0] + t * p2[0]
-            y = (1 - t) * p1[1] + t * p2[1]
-            clear_canvas()
-            frame =0
+    for i in range(1,100,2):
+        t=i/100
+        x = (1 - t) * p1[0] + t * p2[0]
+        y = (1 - t) * p1[1] + t * p2[1]
+        clear_canvas()
+        frame =0
 
-            background.draw(KPU_WIDTH//2,KPU_HEIGHT//2)
-            character.clip_draw((int)(frame) * 100, 100, 100, 100, x, y)
-            update_canvas()
-            frame = (frame+1)%8
-            delay(0.01)
-            get_events()
+        background.draw(KPU_WIDTH//2,KPU_HEIGHT//2)
+        character.clip_draw((int)(frame) * 100, 100, 100, 100, x, y)
+        update_canvas()
+        frame = (frame+1)%8
+        delay(0.01)
+        get_events()
 
 def handle_events():
     global running
