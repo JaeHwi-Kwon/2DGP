@@ -8,17 +8,19 @@ character = load_image('animation_sheet.png')
 background = load_image('KPU_GROUND.png')
 
 def move_by_line(p1,p2):
-
+    frame = 0
     x,y=p1[0],p1[1]
+    if p1[0]>p2[0]:
+        des = 0
+    elif p1[0]<=p2[0]:
+        des=100
     for i in range(1,100,2):
         t=i/100
         x = (1 - t) * p1[0] + t * p2[0]
         y = (1 - t) * p1[1] + t * p2[1]
         clear_canvas()
-        frame =0
-
         background.draw(KPU_WIDTH//2,KPU_HEIGHT//2)
-        character.clip_draw((int)(frame) * 100, 100, 100, 100, x, y)
+        character.clip_draw((int)(frame) * 100, des, 100, 100, x, y)
         update_canvas()
         frame = (frame+1)%8
         delay(0.01)
