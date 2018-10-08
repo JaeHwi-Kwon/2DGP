@@ -34,14 +34,34 @@ def handle_events():
             running = False
 
 
-size = 20
+def move_by_curve(list):
+    frame = 0
+    for i in range(0,20):
+        x, y = list[i][0], list[i][1]
+        if list[i][0] > list[(i+1)%10][0]:
+            des = 0
+        elif list[i][0] <= list[(i+1)%10][0]:
+            des = 100
+        for j in range(0,100,2):
+            t=j/100
+            x = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][0] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[(i)][0] + (
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%10][0] + (t ** 3 - t ** 2) * list[(i + 2)%10][0]) / 2
+            y = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][1] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[i][1] + (
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%10][1] + (t ** 3 - t ** 2) * list[(i + 2)%10][1]) / 2
+            clear_canvas()
+            background.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
+            character.clip_draw((int)(frame) * 100, des, 100, 100, x, y)
+            update_canvas()
+            frame = (frame + 1) % 8
+            delay(0.01)
+            get_events()
+
+size = 10
 points = [(random.randint(50,1230),random.randint(50,974)) for i in range(size)]
-size=len(points)
-n=1
+
 running = True
 while running:
-    move_by_line(points[n-1],points[n])
-    n=(n+1)%size
+    move_by_curve(points)
     handle_events()
 
 close_canvas()
