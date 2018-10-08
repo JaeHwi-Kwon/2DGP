@@ -35,19 +35,20 @@ def handle_events():
 
 
 def move_by_curve(list):
+    global size
     frame = 0
-    for i in range(0,20):
+    for i in range(0,10):
         x, y = list[i][0], list[i][1]
-        if list[i][0] > list[(i+1)%10][0]:
+        if list[i][0] > list[(i+1)%size][0]:
             des = 0
-        elif list[i][0] <= list[(i+1)%10][0]:
+        elif list[i][0] <= list[(i+1)%size][0]:
             des = 100
         for j in range(0,100,2):
             t=j/100
             x = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][0] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[(i)][0] + (
-                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%10][0] + (t ** 3 - t ** 2) * list[(i + 2)%10][0]) / 2
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%size][0] + (t ** 3 - t ** 2) * list[(i + 2)%size][0]) / 2
             y = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][1] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[i][1] + (
-                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%10][1] + (t ** 3 - t ** 2) * list[(i + 2)%10][1]) / 2
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%size][1] + (t ** 3 - t ** 2) * list[(i + 2)%size][1]) / 2
             clear_canvas()
             background.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
             character.clip_draw((int)(frame) * 100, des, 100, 100, x, y)
