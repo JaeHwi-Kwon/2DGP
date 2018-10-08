@@ -43,6 +43,12 @@ def draw_big_point(p):
     turtle.write('     '+str(p))
 
 def draw_curve_5_points(p1,p2,p3,p4,p5):
+    draw_big_point(p1)
+    draw_big_point(p2)
+    draw_big_point(p3)
+    draw_big_point(p4)
+    draw_big_point(p5)
+    
     pass
 
 
