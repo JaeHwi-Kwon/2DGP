@@ -42,14 +42,20 @@ def draw_big_point(p):
     turtle.dot(15)
     turtle.write('     '+str(p))
 
-def draw_curve_5_points(p1,p2,p3,p4,p5):
-    draw_big_point(p1)
-    draw_big_point(p2)
-    draw_big_point(p3)
-    draw_big_point(p4)
-    draw_big_point(p5)
-    
-    pass
+def draw_curve_5_points(list):
+    for i in range (0,5):
+        draw_big_point(list[i])
+
+    for i in range(0,5):
+        for j in range(0,100,2):
+            t=j/100
+            x = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][0] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[(i)][0] + (
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%5][0] + (t ** 3 - t ** 2) * list[(i + 2)%5][0]) / 2
+            y = ((-t ** 3 + 2 * t ** 2 - t) * list[i - 1][1] + (3 * t ** 3 - 5 * t ** 2 + 2) * list[i][1] + (
+                        -3 * t ** 3 + 4 * t ** 2 + t) * list[(i + 1)%5][1] + (t ** 3 - t ** 2) * list[(i + 2)%5][1]) / 2
+            draw_point((x,y))
+        draw_point(list[i])
+
 
 
 def draw_point(p):
@@ -57,9 +63,8 @@ def draw_point(p):
     turtle.dot(5, random.random(), random.random(), random.random())
 
 prepare_turtle_canvas()
-
+points = [[-300, 200], [450, 350], [300, -300], [100, 100], [-200, -200]]
 while True:
-    points=[(-300,200),(450,350),(300,-300),(-200,-200),(100,100)]
     draw_curve_5_points(points)
 
 
