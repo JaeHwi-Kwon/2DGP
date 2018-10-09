@@ -8,6 +8,9 @@ class Boy:
         self.frame = random.randint(0, 7)
         self.image = load_image('run_animation.png')
 
+    def update(self):
+        self.frame = (self.frame+1)%8
+        self.x += 5
 
 class Ball:
     pass
