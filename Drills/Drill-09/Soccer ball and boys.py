@@ -15,8 +15,17 @@ class Boy:
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
-class Ball:
+class BigBall:
+    def __init__(self):
+        self.x, self.y = random.randint(20, 780), random.randint(320, 580)
+        self.image = load_image('ball41x41.png')
+
+class SmallBall:
+    def __init__(self):
+        self.x, self.y = random.randing(10, 790), random.randint(310, 590)
+        self.image = load_image('ball21xz21.png')
     pass
+
 class Grass:
     def __init__(self):
         self.image = load_image('grass.png')
