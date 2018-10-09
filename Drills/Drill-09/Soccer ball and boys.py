@@ -3,7 +3,9 @@ import random
 
 #Object class
 class Boy:
-    pass
+    def __init__(self):
+        self.x, self.y = random.randint(100, 700), 90
+
 class Ball:
     pass
 class Grass:
