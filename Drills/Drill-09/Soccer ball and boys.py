@@ -2,6 +2,8 @@ from pico2d import *
 import random
 
 # Object class
+
+
 class Boy:
     def __init__(self):
         self.x, self.y = random.randint(100, 700), 90
@@ -15,17 +17,20 @@ class Boy:
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
+
 class BigBall:
     def __init__(self):
         self.x, self.y = random.randint(20, 780), random.randint(320, 580)
         self.image = load_image('ball41x41.png')
         self.velocity = random.randint(1, 8)
 
+
 class SmallBall:
     def __init__(self):
         self.x, self.y = random.randing(10, 790), random.randint(310, 590)
         self.image = load_image('ball21xz21.png')
         self.velocity = random.randint(1, 8)
+
 
 class Grass:
     def __init__(self):
@@ -34,13 +39,24 @@ class Grass:
     def draw(self):
         self.image.draw(400,30)
 
+
+def handle_events():
+    global running
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
+
+
 # Initialization
 open_canvas()
-running=True
+running = True
 
 # Main loop
 while running:
     pass
 
-#Finalization
+# Finalization
 close_canvas()
