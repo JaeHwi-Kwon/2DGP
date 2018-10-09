@@ -52,6 +52,10 @@ def handle_events():
 
 # Initialization
 open_canvas()
+team = [Boy() for i in range(11)]
+rand_ball = random.randint(1, 19)
+bigball = [BigBall() for i in range(rand_ball)]
+smallball = [SmallBall() for i in range(20-rand_ball)]
 running = True
 
 # Main loop
