@@ -2,8 +2,6 @@ from pico2d import *
 import random
 
 # Object class
-
-
 class Boy:
     def __init__(self):
         self.x, self.y = random.randint(100, 700), 90
@@ -66,6 +64,7 @@ def handle_events():
             running = False
 
 
+
 # Initialization
 open_canvas()
 grass = Grass()
@@ -74,6 +73,7 @@ rand_ball = random.randint(1, 19)
 B_ball = [BigBall() for i in range(rand_ball)]
 S_ball = [SmallBall() for i in range(20-rand_ball)]
 running = True
+
 
 # Main loop
 while running:
@@ -96,6 +96,7 @@ while running:
         smallball.draw()
     update_canvas()
     delay(0.05)
+
 
 # Finalization
 close_canvas()
