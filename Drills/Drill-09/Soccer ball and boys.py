@@ -5,6 +5,9 @@ import random
 class Boy:
     def __init__(self):
         self.x, self.y = random.randint(100, 700), 90
+        self.frame = random.randint(0, 7)
+        self.image = load_image('run_animation.png')
+
 
 class Ball:
     pass
