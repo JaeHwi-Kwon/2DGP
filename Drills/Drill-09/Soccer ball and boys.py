@@ -22,7 +22,12 @@ class BigBall:
     def __init__(self):
         self.x, self.y = random.randint(20, 780), random.randint(320, 580)
         self.image = load_image('ball41x41.png')
-        self.velocity = random.randint(1, 8)
+        self.velocity = random.randint(3, 10)
+
+    def update(self):
+        self.y -= self.velocity
+        if self.y < 75:
+            self.y = 75
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -32,7 +37,12 @@ class SmallBall:
     def __init__(self):
         self.x, self.y = random.randint(10, 790), random.randint(310, 590)
         self.image = load_image('ball21x21.png')
-        self.velocity = random.randint(1, 8)
+        self.velocity = random.randint(3, 10)
+
+    def update(self):
+        self.y -= self.velocity
+        if self.y < 65:
+            self.y = 65
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -68,6 +78,13 @@ running = True
 # Main loop
 while running:
     handle_events()
+
+    for boy in team:
+        boy.update()
+    for bigball in B_ball:
+        bigball.update()
+    for smallball in S_ball:
+        smallball.update()
 
     clear_canvas()
     grass.draw()
