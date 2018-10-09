@@ -6,8 +6,9 @@ class Boy:
     pass
 class Ball:
     pass
-class grass:
-    pass
+class Grass:
+    def __init__(self):
+        self.image = load_image('grass.png')
 
 #Initialization
 open_canvas()
