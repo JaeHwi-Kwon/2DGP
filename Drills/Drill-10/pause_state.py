@@ -17,8 +17,7 @@ def exit():
     del(image)
 
 
-def resume():
-    pass
+def resume(): pass
 
 
 def handle_events():
@@ -32,8 +31,7 @@ def handle_events():
             game_framework.pop_state()
 
 
-def update():
-    pass
+def update(): pass
 
 
 def draw():
