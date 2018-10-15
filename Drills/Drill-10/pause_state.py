@@ -4,24 +4,15 @@ from pico2d import *
 name = 'PauseState'
 image = None
 
-pause = None
-
-class Pause:
-    def __init__(self):
-        self.image = load_image('pause.png')
-
-    def draw(self):
-        self.image.draw(400,300)
-
 
 def enter():
-    pass
+    global image
+    image = load_image('pause.png')
+
 
 def exit():
-    pass
-
-def pause():
-    pass
+    global image
+    del(image)
 
 
 def resume():
@@ -37,4 +28,6 @@ def update():
 
 
 def draw():
-    pass
+    clear_canvas()
+    image.draw(400,300)
+    update_canvas()
