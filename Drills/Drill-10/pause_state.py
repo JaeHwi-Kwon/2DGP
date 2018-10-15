@@ -45,7 +45,6 @@ def update():
     button_timer += 0.05
 
 
-
 def draw():
     clear_canvas()
     main_state.boy.draw()
