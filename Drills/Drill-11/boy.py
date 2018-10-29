@@ -83,6 +83,24 @@ class RunState:
             boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
 
 
+class DashState:
+
+    @staticmethod
+    def enter(boy, event):
+        pass
+
+    @staticmethod
+    def exit(boy, event):
+        pass
+
+    @staticmethod
+    def do(boy):
+        pass
+
+    @staticmethod
+    def draw(boy):
+        pass
+
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState}
