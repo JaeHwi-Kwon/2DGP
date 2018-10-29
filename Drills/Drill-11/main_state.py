@@ -4,11 +4,9 @@ import os
 
 from pico2d import *
 import game_framework
-import game_world
 
 from boy import Boy
 from grass import Grass
-from ball import Ball
 
 
 name = "MainState"
