@@ -169,3 +169,16 @@ class Boy:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
+class Ghost:
+
+    def __init__(self):
+        self.x, self.y = 1600//2,90
+
+        self.image = load_image('animation._sheet_ghost.png')
+        self.dir = 1
+        self.angle_velocity = 0
+        self.frame = 0
+
+
+    def update(self):
+        pass
