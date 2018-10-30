@@ -54,8 +54,7 @@ class IdleState:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-
-        if boy.sleep_timer == 1000:
+        if get_time() - boy.sleep_timer > 5:
             boy.add_event(SLEEP_TIMER)
 
     @staticmethod
@@ -79,7 +78,6 @@ class RunState:
         elif event == LEFT_UP:
             boy. velocity += RUN_SPEED_PPS
         boy.dir = clamp(-1, boy.velocity,1)
-        boy.sleep_timer = 0
         pass
 
     @staticmethod
@@ -92,6 +90,7 @@ class RunState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time)%8
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.sleep_timer = get_time()
 
     @staticmethod
     def draw(boy):
