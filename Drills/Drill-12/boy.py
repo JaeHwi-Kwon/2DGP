@@ -3,6 +3,10 @@ from pico2d import *
 
 import game_world
 
+from ghost import Ghost
+
+ghost = None
+
 # Boy Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -15,8 +19,6 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
-
-
 
 # Boy Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE = range(6)
@@ -104,6 +106,8 @@ class SleepState:
 
     @staticmethod
     def enter(boy, event):
+        global ghost
+        ghost = Ghost(boy.x, boy.y, boy.dir)
         boy.frame = 0
 
     @staticmethod
@@ -112,18 +116,18 @@ class SleepState:
 
     @staticmethod
     def do(boy):
+        ghost.update()
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
+            boy.image.clip_composite_draw(int(boy.frame) * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25
+                                          , 100, 100)
         else:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, 200, 100, 100, -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
-
-
-
-
+            boy.image.clip_composite_draw(int(boy.frame) * 100, 200, 100, 100, -3.141592 / 2, '', boy.x + 25, boy.y - 25
+                                          ,100, 100)
+        ghost.draw()
 
 
 next_state_table = {
@@ -131,6 +135,7 @@ next_state_table = {
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState, SPACE: IdleState}
 }
+
 
 class Boy:
 
@@ -147,7 +152,6 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
-
     def add_event(self, event):
         self.event_que.insert(0, event)
 
@@ -161,23 +165,9 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.x  - 60, self.y +50, '(Time: %3.2f)' %get_time(), (255,255,0))
+        self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255, 255, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
-
-class Ghost:
-
-    def __init__(self):
-        self.x, self.y = 1600//2,90
-
-        self.image = load_image('animation._sheet_ghost.png')
-        self.dir = 1
-        self.angle_velocity = 0
-        self.frame = 0
-
-
-    def update(self):
-        pass

@@ -14,6 +14,7 @@ name = "MainState"
 
 boy = None
 
+
 def enter():
     global boy
     boy = Boy()
@@ -24,6 +25,7 @@ def enter():
 
 def exit():
     game_world.clear()
+
 
 def pause():
     pass
