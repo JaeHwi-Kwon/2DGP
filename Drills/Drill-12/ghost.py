@@ -16,16 +16,18 @@ class Ghost:
         self.image = load_image('animation_sheet_ghost.png')
         self.dir = dir
         self.frame = 0
+        if dir == 1:
+            self.angle = 3.141592 / 2
+        else:
+            self.angle = -3.141592 / 2
 
     def update(self):
+        self. angle += 3.141592 / 180
+        self.y += 1
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         pass
 
     def draw(self):
         if self.dir == 1:
-            self.image.clip_composite_draw(int(self.frame) * 100, 300, 100, 100, 3.141592 / 2, '', self.x - 25, self.y - 25
-                                          , 100, 100)
-        else:
-            self.image.clip_composite_draw(int(self.frame) * 100, 200, 100, 100, -3.141592 / 2, '', self.x + 25, self.y - 25
-                                          ,100, 100)
-        pass
+            self.image.clip_composite_draw(int(self.frame) * 100, 300, 100, 100, self.angle, '', self.x - 25,
+                                           self.y - 25, 100, 100)
