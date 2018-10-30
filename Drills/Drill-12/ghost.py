@@ -9,7 +9,8 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 # 100 pixel = 3 meter
-
+# 2rps = 12 degree per frame
+# 100 frame 
 
 class Ghost:
 
@@ -26,14 +27,24 @@ class Ghost:
             self.angle = -3.141592 / 2
 
     def update(self):
+        # opacity
         self.opacity += self.opac_toggle
         if self.opacity > 1.0:
             self.opac_toggle = - self.opac_toggle
         elif self.opacity < 0.0:
             self.opac_toggle = - self.opac_toggle
-        self.angle -= 3.141592 / 180 * self.dir
-        self.y += 1
+
+        # translate
+        if self.angle > 0 and self.dir == 1:
+            self.y += 2
+        elif self.angle < 0 and self.dir == -1:
+            self.y += 2
+
+        # frame
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+
+        # rotate
+        self.angle -= 3.141592 / 180 * self.dir
         if self.dir == 1:
             self.angle = clamp(0, self.angle, 3.141592/2)
         else:
