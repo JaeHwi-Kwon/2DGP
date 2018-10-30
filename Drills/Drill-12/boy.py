@@ -56,7 +56,7 @@ class IdleState:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        if get_time() - boy.sleep_timer > 1:
+        if get_time() - boy.sleep_timer > 10:
             boy.add_event(SLEEP_TIMER)
 
     @staticmethod

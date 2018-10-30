@@ -3,14 +3,15 @@ from pico2d import *
 
 import game_world
 
+PIXEL_PER_METER = (10.0 / 0.3)
+ANGLE_PER_SECOND = (3.141592*2)*2
+FRAME_PER_SECOND = 60
+ANGLE_PER_FRAME = ANGLE_PER_SECOND/FRAME_PER_SECOND
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-# 100 pixel = 3 meter
-# 2rps = 12 degree per frame
-# 100*sin(3.141592/180*12) and 100*cos(3.141592/180.12)
 
 class Ghost:
 
@@ -57,13 +58,10 @@ class Ghost:
         if self.y == 270:
             self.circ_toggle = True
 
-        # (800,370)이 중심점
-        if self.circ_toggle == True:
-            self.circ_angle += 3.141592 / 180 * 12
-            self.x = self.cirx + 100*math.cos(self.circ_angle)
-            self.y = self.ciry + 100*math.sin(self.circ_angle)
-
-
+        if self.circ_toggle:
+            self.circ_angle += ANGLE_PER_FRAME
+            self.x = self.cirx + PIXEL_PER_METER*3*math.cos(self.circ_angle)
+            self.y = self.ciry + PIXEL_PER_METER*3*math.sin(self.circ_angle)
 
     def draw(self):
         self.image.opacify(self.opacity)
@@ -72,7 +70,7 @@ class Ghost:
                                            self.y - 25, 100, 100)
         else:
             self.image.clip_composite_draw(int(self.frame) * 100, 200, 100, 100, self.angle, '', self.x + 25,
-                                           self.y - 25 , 100, 100)
+                                           self.y - 25, 100, 100)
 
     def exit(self):
         pass
