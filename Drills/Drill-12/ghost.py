@@ -10,7 +10,7 @@ FRAMES_PER_ACTION = 8
 
 # 100 pixel = 3 meter
 # 2rps = 12 degree per frame
-# 100 frame 
+# 100*sin(3.141592/180*12) and 100*cos(3.141592/180.12)
 
 class Ghost:
 
@@ -19,8 +19,12 @@ class Ghost:
         self.image = load_image('animation_sheet_ghost.png')
         self.dir = dir
         self.frame = 0
+        self.font = load_font('ENCR10B.TTF', 16)
         self.opacity = 0
         self.opac_toggle = 0.05
+        self.circ_toggle = False
+        self.circ_angle = 3.141592/180*270
+        self.cirx, self.ciry = x, y + 270
         if dir == 1:
             self.angle = 3.141592 / 2
         else:
@@ -34,14 +38,14 @@ class Ghost:
         elif self.opacity < 0.0:
             self.opac_toggle = - self.opac_toggle
 
+        # frame
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+
         # translate
         if self.angle > 0 and self.dir == 1:
             self.y += 2
         elif self.angle < 0 and self.dir == -1:
             self.y += 2
-
-        # frame
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
         # rotate
         self.angle -= 3.141592 / 180 * self.dir
@@ -49,7 +53,17 @@ class Ghost:
             self.angle = clamp(0, self.angle, 3.141592/2)
         else:
             self.angle = clamp(-3.141592, self.angle, 0)
-        pass
+
+        if self.y == 270:
+            self.circ_toggle = True
+
+        # (800,370)이 중심점
+        if self.circ_toggle == True:
+            self.circ_angle += 3.141592 / 180 * 12
+            self.x = self.cirx + 100*math.cos(self.circ_angle)
+            self.y = self.ciry + 100*math.sin(self.circ_angle)
+
+
 
     def draw(self):
         self.image.opacify(self.opacity)
