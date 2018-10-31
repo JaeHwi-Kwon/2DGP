@@ -1,8 +1,8 @@
 import game_framework
 import pico2d
 
-import main_state
+import logo_state
 
 pico2d.open_canvas(1920, 1080)
-game_framework.run(main_state)
+game_framework.run(logo_state)
 pico2d.close_canvas()

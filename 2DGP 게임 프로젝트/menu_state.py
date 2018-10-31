@@ -5,26 +5,20 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-
-from John import John
-from grass import Grass
+import main_state
 
 
-name = "MainState"
+name = "MenuState"
 
-john = None
-
+menu = None
 
 def enter():
-    global john
-    john = John()
-    grass = Grass()
-    game_world.add_object(grass, 0)
-    game_world.add_object(john, 1)
-
+    global menu
+    menu = load_image('menu.png')
 
 def exit():
-    game_world.clear()
+    global menu
+    del(menu)
 
 
 def pause():
@@ -42,24 +36,15 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-        else:
-            john.handle_event(event)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
+            game_framework.push_state(main_state)
 
 
 def update():
-    for game_object in game_world.all_objects():
-        game_object.update()
+    pass
 
 
 def draw():
     clear_canvas()
-    for game_object in game_world.all_objects():
-        game_object.draw()
+    menu.draw(1920//2, 1080//2)
     update_canvas()
-
-
-
-
-
-
-
