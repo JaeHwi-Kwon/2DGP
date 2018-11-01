@@ -63,7 +63,7 @@ class IdleState:
         John.y2 = John.y
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.y += John.jump
-        John.y = clamp(90.0, John.y, 1200.0)
+        John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
 
     @staticmethod
@@ -107,7 +107,7 @@ class RunState:
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
-        John.y = clamp(90.0, John.y, 1200.0)
+        John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
 
 
@@ -130,7 +130,7 @@ next_state_table = {
 class John:
 
     def __init__(self):
-        self.x, self.y = 1920 // 2, 90
+        self.x, self.y = 100, 150
         self.y2 = 90
         self.image = load_image('animation_sheet.png')
         self.dir = 1

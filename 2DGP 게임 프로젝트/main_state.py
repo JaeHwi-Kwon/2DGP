@@ -7,7 +7,7 @@ import game_framework
 import game_world
 
 from John import John
-from grass import Grass
+from load_map import Map
 
 
 name = "MainState"
@@ -18,8 +18,8 @@ john = None
 def enter():
     global john
     john = John()
-    grass = Grass()
-    game_world.add_object(grass, 0)
+    map = Map()
+    game_world.add_object(map, 0)
     game_world.add_object(john, 1)
 
 
