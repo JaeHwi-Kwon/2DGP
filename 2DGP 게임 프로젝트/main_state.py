@@ -13,10 +13,11 @@ from load_map import Map
 name = "MainState"
 
 john = None
-
+map = None
 
 def enter():
     global john
+    global map
     john = John()
     map = Map()
     game_world.add_object(map, 0)

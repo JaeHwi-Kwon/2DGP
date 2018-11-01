@@ -1,7 +1,7 @@
 import game_framework
 from pico2d import *
 
-import game_world
+from load_map import map_list
 
 # Boy Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -51,8 +51,6 @@ class IdleState:
             if John.jump > 0.0:
                 John.jump = 0.0
 
-        John.timer = 300
-
     @staticmethod
     def exit(John, event):
         # fill here
@@ -63,8 +61,37 @@ class IdleState:
         John.y2 = John.y
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.y += John.jump
-        John.y = clamp(150.0, John.y, 1200.0)
+        #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
+
+        for i in range(0,9):
+            for j in range(0,16):
+                if map_list[i][j] == 1:
+                    # UP collision check
+                    if ((John.y + 50.0) > (960 - 120 * i)) and ((John.y - 50.0) < (960 - 120 * i)):
+                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
+                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
+                            John.y = 960 - 120 * i - 50.0
+                            John.jump = 0.0
+                    # DOWN collision check
+                    elif ((John.y - 50.0) < (1080 - 120 * i)) and ((John.y + 50.0) > (1080 - 120 * i)):
+                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
+                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
+                            John.y = 1080 - 120 * i + 50.0
+                    # LEFT collision check
+                    if ((John.x - 15.0) < (120 * (j + 1)) and (John.x - 15.0) > (120 * j)):
+                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
+                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
+                            John.x = 15.0 + 120.0 * (j + 1)
+                    # RIGHT collision check
+                    elif ((John.x + 15.0) > (120.0 * j)) and ((John.x + 15.0) < (120.0 * (j + 1))):
+                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
+                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
+                            John.x = -15.0 + 120.0 * j
+                    pass
+
+
+
 
     @staticmethod
     def draw(John):
@@ -103,12 +130,36 @@ class RunState:
     def do(John):
         John.y2 = John.y
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
-        John.timer -= 1
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
-        John.y = clamp(150.0, John.y, 1200.0)
+        #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
+
+        for i in range(0, 9):
+            for j in range(0, 16):
+                if map_list[i][j] == 1:
+                    # UP collision check
+                    if ((John.y + 50.0) > (960 - 120 * i)) and ((John.y - 50.0) < (960 - 120 * i)):
+                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
+                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
+                            John.y = 960 - 120 * i - 50.0
+                            John.jump = 0.0
+                    # DOWN collision check
+                    elif ((John.y - 50.0) < (1080 - 120 * i)) and ((John.y + 50.0) > (1080 - 120 * i)):
+                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
+                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
+                            John.y = 1080 - 120 * i + 50.0
+                    # LEFT collision check
+                    if ((John.x - 15.0) < (120 * (j + 1)) and (John.x - 15.0) > (120 * j)):
+                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or\
+                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
+                            John.x = 15.0 + 120.0 * (j + 1)
+                    # RIGHT collision check
+                    elif ((John.x + 15.0) > (120.0 * j)) and ((John.x + 15.0) < (120.0 * (j + 1))):
+                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
+                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
+                            John.x = -15.0 + 120.0 * j
 
 
     @staticmethod
@@ -130,13 +181,12 @@ next_state_table = {
 class John:
 
     def __init__(self):
-        self.x, self.y = 100, 150
+        self.x, self.y = 100, 800
         self.y2 = 90
         self.image = load_image('animation_sheet.png')
         self.dir = 1
         self.velocity = 0
         self.frame = 0
-        self.timer = 0
         self.jump = 0
         self.jump_toggle = True
         self.event_que = []
