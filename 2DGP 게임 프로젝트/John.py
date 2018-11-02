@@ -31,6 +31,11 @@ key_event_table = {
 gravity = 0.03
 
 
+def blk(y, x):
+    # left,up,right,down
+    return 120*x, 1080-120*y, 120*(x+1), 960 - 120*y
+
+
 # John States
 class IdleState:
 
@@ -63,33 +68,35 @@ class IdleState:
         John.y += John.jump
         #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
-        John.jump = clamp(-4.0, John.jump, 4.0)
+        John.jump = clamp(-30.0, John.jump, 4.0)
+        John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
         for i in range(0,9):
             for j in range(0,16):
                 if map_list[i][j] == 1:
+                    left, up, right, down = blk(i, j)
                     # UP collision check
-                    if ((John.y + 50.0) > (960 - 120 * i)) and ((John.y - 50.0) < (960 - 120 * i)):
-                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
-                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
-                            John.y = 960 - 120 * i - 50.0
+                    if John.up > down and John.up < up:
+                        if John.right > left and John.right < right or \
+                                John.left < right and John.left > left:
+                            John.y = John.y2
                             John.jump = 0.0
                     # DOWN collision check
-                    elif ((John.y - 50.0) < (1080 - 120 * i)) and ((John.y + 50.0) > (1080 - 120 * i)):
-                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
-                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
-                            John.y = 1080 - 120 * i + 50.0
+                    elif John.down < up and John.up > up:
+                        if John.right > left and John.right < right or \
+                                John.left < right and John.left > left:
+                            John.y = John.y2
+                            John.jump = 0.0
                     # LEFT collision check
-                    if ((John.x - 15.0) < (120 * (j + 1)) and (John.x - 15.0) > (120 * j)):
-                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
-                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
-                            John.x = 15.0 + 120.0 * (j + 1)
+                    if John.left < right and John.left > left:
+                        if John.up > down and John.up < up or \
+                                John.down < up and John.down > down:
+                            John.x = John.x2
                     # RIGHT collision check
-                    elif ((John.x + 15.0) > (120.0 * j)) and ((John.x + 15.0) < (120.0 * (j + 1))):
-                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
-                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
-                            John.x = -15.0 + 120.0 * j
-                    pass
+                    elif John.right > left and John.right < right:
+                        if John.up > down and John.up < up or \
+                                John.down < up and John.down > down:
+                            John.x = John.x2
 
 
 
@@ -130,38 +137,42 @@ class RunState:
     @staticmethod
     def do(John):
         John.y2 = John.y
+        John.x2 = John.x
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
         #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
-        John.jump = clamp(-4.0, John.jump, 4.0)
+        John.jump = clamp(-30.0, John.jump, 4.0)
+        John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
         for i in range(0, 9):
             for j in range(0, 16):
                 if map_list[i][j] == 1:
+                    left, up, right, down = blk(i, j)
                     # UP collision check
-                    if ((John.y + 50.0) > (960 - 120 * i)) and ((John.y - 50.0) < (960 - 120 * i)):
-                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
-                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
-                            John.y = 960 - 120 * i - 50.0
+                    if John.up > down and John.up < up:
+                        if John.right > left and John.right < right or \
+                                John.left < right and John.left > left:
+                            John.y = John.y2
                             John.jump = 0.0
                     # DOWN collision check
-                    elif ((John.y - 50.0) < (1080 - 120 * i)) and ((John.y + 50.0) > (1080 - 120 * i)):
-                        if ((John.x + 15.0) - (120.0 * j) > 0 and (John.x + 15.0) - (120.0 * (j + 1)) < 0) or \
-                                ((John.x - 15.0) - (120.0 * (j + 1)) < 0 and (John.x - 15.0) - (120.0 * j) > 0):
-                            John.y = 1080 - 120 * i + 50.0
+                    elif John.down < up and John.up > up:
+                        if John.right > left and John.right < right or \
+                                John.left < right and John.left > left:
+                            John.y = John.y2
+                            John.jump = 0.0
                     # LEFT collision check
-                    if ((John.x - 15.0) < (120 * (j + 1)) and (John.x - 15.0) > (120 * j)):
-                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or\
-                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
-                            John.x = 15.0 + 120.0 * (j + 1)
+                    if John.left < right and John.left > left:
+                        if John.up > down and John.up < up or \
+                                John.down < up and John.down > down:
+                            John.x = John.x2
                     # RIGHT collision check
-                    elif ((John.x + 15.0) > (120.0 * j)) and ((John.x + 15.0) < (120.0 * (j + 1))):
-                        if ((John.y + 50.0) - (960 - 120 * i) > 0 and (John.y + 50.0) - (1080 - 120 * i) < 0) or \
-                                ((John.y - 50.0) - (1080 - 120 * i) < 0 and (John.y - 50.0 - (960 - 120 * i) > 0)):
-                            John.x = -15.0 + 120.0 * j
+                    elif John.right > left and John.right < right:
+                        if John.up > down and John.up < up or \
+                                John.down < up and John.down > down:
+                            John.x = John.x2
 
 
     @staticmethod
@@ -183,8 +194,9 @@ next_state_table = {
 class John:
 
     def __init__(self):
-        self.x, self.y = 100, 800
-        self.y2 = 90
+        self.x, self.y = 100, 300
+        self.x2, self.y2 = 100, 300
+        self.left, self.up, self.right, self.down = self.x - 15, self.y + 30, self.x +15, self.y - 30
         self.image = load_image('animation_sheet.png')
         self.dir = 1
         self.velocity = 0
