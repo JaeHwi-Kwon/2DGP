@@ -63,6 +63,7 @@ class IdleState:
         John.y += John.jump
         #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
+        John.jump = clamp(-4.0, John.jump, 4.0)
 
         for i in range(0,9):
             for j in range(0,16):
@@ -135,6 +136,7 @@ class RunState:
         John.y += John.jump
         #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
+        John.jump = clamp(-4.0, John.jump, 4.0)
 
         for i in range(0, 9):
             for j in range(0, 16):
