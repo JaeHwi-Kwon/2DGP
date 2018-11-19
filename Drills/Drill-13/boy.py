@@ -70,8 +70,8 @@ class WalkingState:
         boy.x += boy.x_velocity * game_framework.frame_time
         boy.y += boy.y_velocity * game_framework.frame_time
 
-        boy.x = clamp(0, boy.x, boy.bg.w)
-        boy.y = clamp(0, boy.y, boy.bg.h)
+        boy.x = clamp(boy.y/4.7, boy.x, boy.bg.w - boy.y/4.7)
+        boy.y = clamp(70, boy.y, boy.bg.h-50)
 
 
     @staticmethod
@@ -143,7 +143,7 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.x - self.bg.window_left, self.y + self.bg.window_bottom, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
+        self.font.draw(self.x - self.bg.w/2, self.y + self.bg.h/2, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
