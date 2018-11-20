@@ -65,9 +65,9 @@ class IdleState:
     def do(John):
         John.y2 = John.y
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
-        John.y += John.jump
+        John.y = John.y + John.jump
         #John.y = clamp(150.0, John.y, 1200.0)
-        John.jump -= gravity
+        John.jump = John.jump - gravity*game_framework.frame_time
         John.jump = clamp(-30.0, John.jump, 4.0)
         John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
