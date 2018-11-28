@@ -33,28 +33,13 @@ map_list.append([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1]])
 
-class Map:
-    def __init__(self, stage):
-        self.block = load_image('block_normal.png')
-        self.stage = stage
-
-    def draw(self):
-        global map_list
-        for i in range(0, 9):
-            for j in range(0, 16):
-                if map_list[self.stage][i][j] == 1:
-                    self.block.draw(60 + 120*j, 1020 - 120*i)
-
-    def update(self):
-        pass
-
 
 class Block:
-    images = None
+    image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        load_image('block_normal.png')
+        self.image = load_image('block_normal.png')
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -68,6 +53,10 @@ class Block:
         self.__dict__.update(state)
 
     def draw(self):
+        self.image.draw(self.x, self.y)
+        pass
+
+    def update(self):
         pass
 
 

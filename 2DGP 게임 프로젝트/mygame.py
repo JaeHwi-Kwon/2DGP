@@ -3,7 +3,8 @@ import pico2d
 
 import logo_state
 import main_state
+import world_build_state
 
 pico2d.open_canvas(1920, 1080)
-game_framework.run(main_state)
+game_framework.run(world_build_state)
 pico2d.close_canvas()

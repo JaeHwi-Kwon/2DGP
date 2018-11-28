@@ -70,32 +70,7 @@ class IdleState:
         John.jump = clamp(-30.0, John.jump, 4.0)
         John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
-        for i in range(0,9):
-            for j in range(0,16):
-                if map_list[0][i][j] == 1:
-                    left, up, right, down = blk(i, j)
-                    # UP collision check
-                    if John.up > down and John.up < up:
-                        if John.right > left and John.right < right or \
-                                John.left < right and John.left > left:
-                            John.y = John.y2
-                            John.jump = 0.0
-                    # DOWN collision check
-                    elif John.down < up and John.up > up:
-                        if John.right > left and John.right < right or \
-                                John.left < right and John.left > left:
-                            John.y = John.y2
-                            John.jump = 0.0
-                    # LEFT collision check
-                    if John.left < right and John.left > left:
-                        if John.up > down and John.up < up or \
-                                John.down < up and John.down > down:
-                            John.x = John.x2
-                    # RIGHT collision check
-                    elif John.right > left and John.right < right:
-                        if John.up > down and John.up < up or \
-                                John.down < up and John.down > down:
-                            John.x = John.x2
+
 
 
 
@@ -145,32 +120,6 @@ class RunState:
         John.jump = clamp(-30.0, John.jump, 4.0)
         John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
-        for i in range(0, 9):
-            for j in range(0, 16):
-                if map_list[0][i][j] == 1:
-                    left, up, right, down = blk(i, j)
-                    # UP collision check
-                    if John.up > down and John.up < up:
-                        if John.right > left and John.right < right or \
-                                John.left < right and John.left > left:
-                            John.y = John.y2
-                            John.jump = 0.0
-                    # DOWN collision check
-                    elif John.down < up and John.up > up:
-                        if John.right > left and John.right < right or \
-                                John.left < right and John.left > left:
-                            John.y = John.y2
-                            John.jump = 0.0
-                    # LEFT collision check
-                    if John.left < right and John.left > left:
-                        if John.up > down and John.up < up or \
-                                John.down < up and John.down > down:
-                            John.x = John.x2
-                    # RIGHT collision check
-                    elif John.right > left and John.right < right:
-                        if John.up > down and John.up < up or \
-                                John.down < up and John.down > down:
-                            John.x = John.x2
 
 
     @staticmethod
