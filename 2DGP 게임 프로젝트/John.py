@@ -1,7 +1,6 @@
 import game_framework
 from pico2d import *
 
-from load_map import map_list
 
 # Boy Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)
