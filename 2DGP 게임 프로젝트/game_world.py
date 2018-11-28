@@ -3,7 +3,7 @@
 # layer 1: Character Object
 # layer 2: Trap Object
 # layer 3: UI Object
-objects = [[], []]
+objects = [[], [], [], []]
 
 
 def add_object(o, layer):

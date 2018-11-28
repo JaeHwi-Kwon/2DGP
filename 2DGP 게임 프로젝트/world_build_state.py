@@ -24,6 +24,12 @@ cannon = None
 goal = None
 trap = None
 
+blocks = []
+enemies = []
+cannons = []
+traps = []
+goals = []
+
 BLANK, BLOCK, ENEMY, CANNON, TRAP, GOAL = range(6)
 
 name = "WorldBuildState"
@@ -43,22 +49,25 @@ def enter():
         for j in range(stage_data_list[0][1]):
             if stage_data_list[1][i][j] == BLOCK:
                 block = Block(60 + 120 * j, 1020 - 120 * i)
+                blocks.append(Block(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(block, 1)
                 pass
             elif stage_data_list[1][i][j] == CANNON:
                 cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(cannon, 1)
                 pass
             elif stage_data_list[1][i][j] == ENEMY:
                 enemy = Enemy(60 + 120 * j, 1020 - 120 * i)
+                enemies.append(Enemy(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(enemy, 2)
                 pass
             elif stage_data_list[1][i][j] == TRAP:
-                trap = Trap(60 + 120 * j, 1020 - 120 * i)
+                traps.append(Trap(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(trap, 2)
                 pass
             elif stage_data_list[1][i][j] == GOAL:
-                goal = Goal(60 + 120 * j, 1020 - 120 * i)
+                goals.append(Goal(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(goal, 3)
             else:
                 pass
@@ -79,6 +88,9 @@ def resume():
 
 def get_john():
     return john
+
+def get_objects():
+    return blocks, cannons, enemies, traps, goals
 
 
 def create_new_world():

@@ -14,9 +14,14 @@ name = "MainState"
 
 
 john = None
+blocks = []
+enemies = []
+cannons = []
+goals = []
+traps = []
 
 
-def collide(a,b):
+def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -29,8 +34,9 @@ def collide(a,b):
 
 
 def enter():
-    global john
+    global john, blocks, enemies, cannons, goals, traps
     john = world_build_state.get_john()
+    blocks, enemies, cannons, goals, traps = world_build_state.get_objects()
 
 
 def exit():
@@ -61,6 +67,12 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    for block in blocks:
+        if collide(john, block):
+            john.back_to_the_position_before()
+
+
 
 
 def draw():

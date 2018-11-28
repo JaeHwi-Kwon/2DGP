@@ -159,6 +159,10 @@ class John:
     def add_event(self, event):
         self.event_que.insert(0, event)
 
+    def back_to_the_position_before(self):
+        self.x = self.x2
+        self.y = self.y2
+
     def update(self):
         self.cur_state.do(self)
         if len(self.event_que) > 0:
