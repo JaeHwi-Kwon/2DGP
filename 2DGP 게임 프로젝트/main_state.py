@@ -9,6 +9,7 @@ import game_world
 from John import John
 from load_map import Map
 
+import menu_state
 
 name = "MainState"
 
@@ -19,7 +20,7 @@ def enter():
     global john
     global map
     john = John()
-    map = Map()
+    map = Map(0)
     game_world.add_object(map, 0)
     game_world.add_object(john, 1)
 
@@ -42,9 +43,20 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.quit()
+                game_framework.change_state(menu_state)
         else:
             john.handle_event(event)
+
+def collide(a,b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if left_a <left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 
 def update():

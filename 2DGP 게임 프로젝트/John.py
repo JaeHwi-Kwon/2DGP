@@ -5,7 +5,7 @@ from load_map import map_list
 
 # Boy Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 40.0
+RUN_SPEED_KMPH = 100.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0/60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -66,14 +66,13 @@ class IdleState:
         John.y2 = John.y
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.y += John.jump
-        #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
         John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
         for i in range(0,9):
             for j in range(0,16):
-                if map_list[i][j] == 1:
+                if map_list[0][i][j] == 1:
                     left, up, right, down = blk(i, j)
                     # UP collision check
                     if John.up > down and John.up < up:
@@ -142,14 +141,13 @@ class RunState:
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
-        #John.y = clamp(150.0, John.y, 1200.0)
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
         John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
         for i in range(0, 9):
             for j in range(0, 16):
-                if map_list[i][j] == 1:
+                if map_list[0][i][j] == 1:
                     left, up, right, down = blk(i, j)
                     # UP collision check
                     if John.up > down and John.up < up:
@@ -206,6 +204,9 @@ class John:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+
+    def get_bb(self):
+        return self.x - 15, self.y - 30, self.x + 15, self.y + 30
 
     def add_event(self, event):
         self.event_que.insert(0, event)

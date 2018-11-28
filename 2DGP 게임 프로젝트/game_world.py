@@ -1,6 +1,8 @@
 
 # layer 0: Background Objects
-# layer 1: Foreground Objects
+# layer 1: Character Object
+# layer 2: Trap Object
+# layer 3: UI Object
 objects = [[], []]
 
 
@@ -12,7 +14,6 @@ def remove_object(o):
     for i in range(len(objects)):
         if o in objects[i]:
             objects[i].remove(o)
-            del o
 
 
 def clear():

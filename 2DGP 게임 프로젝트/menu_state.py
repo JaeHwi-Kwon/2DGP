@@ -5,7 +5,7 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-import main_state
+import select_state
 
 
 name = "MenuState"
@@ -37,7 +37,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
-            game_framework.push_state(main_state)
+            game_framework.push_state(select_state)
 
 
 def update():
