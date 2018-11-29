@@ -33,10 +33,44 @@ def collide(a, b):
     return True
 
 
+def collide_up(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if top_a >= bottom_b:
+        return True
+
+
+def collide_down(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if bottom_a <= top_b:
+        return True
+
+
+def collide_left(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a <= right_b:
+        return True
+
+
+def collide_right(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if right_a >= left_b:
+        return True
+
+
 def enter():
     global john, blocks, enemies, cannons, goals, traps
     john = world_build_state.get_john()
     blocks, enemies, cannons, goals, traps = world_build_state.get_objects()
+    #blocks.set_center_object(john)
+    #john.set_background(world_build_state.get_world_size())
 
 
 def exit():
@@ -57,7 +91,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                game_framework.change_state(menu_state)
+            game_framework.change_state(menu_state)
         else:
             john.handle_event(event)
 
@@ -65,12 +99,16 @@ def handle_events():
 
 
 def update():
+    global john
     for game_object in game_world.all_objects():
         game_object.update()
 
     for block in blocks:
         if collide(john, block):
-            john.back_to_the_position_before()
+            if collide_up(john, block) or collide_down(john, block):
+                john.back_to_the_position_before_y()
+            if collide_left(john,block) or collide_right(john,block):
+                john.back_to_the_position_before_x()
 
 
 

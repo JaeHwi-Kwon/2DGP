@@ -67,7 +67,8 @@ class IdleState:
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
-        John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
+
+        John.x = clamp(John.canvas_width // 2, John.x, John.canvas_width)
 
 
 
@@ -117,12 +118,12 @@ class RunState:
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
-        John.left, John.up, John.right, John.down = John.x - 15, John.y + 30, John.x + 15, John.y - 30
 
 
 
     @staticmethod
     def draw(John):
+        cx = John.canvas_width//2
         if John.dir == 1:
             John.image.clip_draw(int(John.frame) * 100, 100, 100, 100, John.x, John.y)
         else:
@@ -140,9 +141,10 @@ next_state_table = {
 class John:
 
     def __init__(self):
+        self.canvas_width = get_canvas_width()
+        self.canvas_height = get_canvas_height()
         self.x, self.y = 100, 300
         self.x2, self.y2 = 100, 300
-        self.left, self.up, self.right, self.down = self.x - 15, self.y + 30, self.x +15, self.y - 30
         self.image = load_image('animation_sheet.png')
         self.dir = 1
         self.velocity = 0
@@ -156,12 +158,18 @@ class John:
     def get_bb(self):
         return self.x - 15, self.y - 30, self.x + 15, self.y + 30
 
+    def set_background(self, bg):
+        self.x, self.y = bg
+
     def add_event(self, event):
         self.event_que.insert(0, event)
 
-    def back_to_the_position_before(self):
+    def back_to_the_position_before_x(self):
         self.x = self.x2
+
+    def back_to_the_position_before_y(self):
         self.y = self.y2
+        self.jump = 0
 
     def update(self):
         self.cur_state.do(self)

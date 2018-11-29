@@ -31,6 +31,8 @@ traps = []
 goals = []
 
 BLANK, BLOCK, ENEMY, CANNON, TRAP, GOAL = range(6)
+BLOCK_WIDTH = 120
+BLOCK_HEIGHT = 120
 
 name = "WorldBuildState"
 
@@ -89,8 +91,14 @@ def resume():
 def get_john():
     return john
 
+
 def get_objects():
     return blocks, cannons, enemies, traps, goals
+
+def get_world_size():
+    with open('first_stage_data.json', 'r') as f:
+        stage_data_list = json.load(f)
+    return stage_data_list[0][0] * BLOCK_WIDTH, stage_data_list[0][1] * BLOCK_HEIGHT
 
 
 def create_new_world():

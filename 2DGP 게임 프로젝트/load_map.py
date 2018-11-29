@@ -27,6 +27,10 @@ class Block:
         pass
 
     def update(self):
+
+        pass
+
+    def set_center_object(self, john):
         pass
 
 
