@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import menu_state
-
+import Sound
 import game_framework
 
 name = "FailureState"
@@ -11,6 +11,9 @@ failure = None
 def enter():
     global failure
     failure = load_image('failure_state.png')
+    Sound.init()
+    Sound.play_sound_effect(5)
+    Sound.sets_sound_volume(Sound.sound_effect, 1, 0)
 
 def exit():
     global failure

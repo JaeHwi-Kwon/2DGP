@@ -5,11 +5,12 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-import failure_state
+import Sound
 
 import world_build_state
-
 import select_state
+import goal_state
+import failure_state
 
 name = "MainState"
 
@@ -46,7 +47,7 @@ def collide_down(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if bottom_a <= top_b and a.y < a.y2:
+    if bottom_a <= top_b and a.y <= a.y2:
         return True
 
 
@@ -72,9 +73,12 @@ def enter():
     blocks, cannons, enemies, traps, goals = world_build_state.get_objects()
     #blocks.set_center_object(john)
     #john.set_background(world_build_state.get_world_size())
+    Sound.init()
+    Sound.play_background_sound(0)
 
 
 def exit():
+    Sound.stop_background_sound(0)
     game_world.clear()
 
 
@@ -127,8 +131,8 @@ def update():
                 john.back_to_the_position_before_y()
 
     for goal in goals:
-        if collide(john,goal):
-            pass
+        if collide(john, goal):
+            game_framework.change_state(goal_state)
 
     if john.y <= 0:
         game_framework.change_state(failure_state)

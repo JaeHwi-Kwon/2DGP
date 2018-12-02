@@ -8,7 +8,7 @@ class Background:
         self.y = 1080/2
 
     def exit(self):
-        del(self.image)
+        pass
 
     def update(self):
         pass

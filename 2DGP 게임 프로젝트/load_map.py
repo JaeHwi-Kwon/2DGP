@@ -10,7 +10,8 @@ class Block:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('./Image/main_stage/BLOCK_BASIC.png')
+        self.image = [load_image('./Image/main_stage/Block/block %d.png' % i) for i in range(1, 4)]
+        self.frame = random.randint(0, 3)
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -24,11 +25,11 @@ class Block:
         self.__dict__.update(state)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image[int(self.frame)].draw(self.x, self.y)
         pass
 
     def update(self):
-
+        self.frame = (self.frame + game_framework.frame_time*10) % 3
         pass
 
     #def set_center_object(self, john):
@@ -123,7 +124,8 @@ class Goal:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('goal.png')
+        self.image = [load_image('./Image/main_stage/Goal/Clock %d.png' % i) for i in range(1, 7)]
+        self.frame = 1
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -137,8 +139,9 @@ class Goal:
         self.__dict__.update(state)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image[int(self.frame)].draw(self.x, self.y)
         pass
 
     def update(self):
+        self.frame = (self.frame + game_framework.frame_time*10) % 6
         pass

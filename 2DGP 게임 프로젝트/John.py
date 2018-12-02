@@ -1,5 +1,6 @@
 import game_framework
 from pico2d import *
+import Sound
 
 
 # Boy Run Speed
@@ -30,11 +31,6 @@ key_event_table = {
 gravity = 0.03
 
 
-def blk(y, x):
-    # left,up,right,down
-    return 120*x, 1080-120*y, 120*(x+1), 960 - 120*y
-
-
 # John States
 class IdleState:
 
@@ -50,6 +46,7 @@ class IdleState:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
             if John.y2 == John.y:
+                Sound.play_sound_effect(2)
                 John.jump = 4.0
                 John.y = John.y2
         elif event == UP_UP:
@@ -68,6 +65,7 @@ class IdleState:
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
+        Sound.sets_sound_volume(Sound.sound_effect, 1, 0)
 
 
         #John.x = clamp(John.canvas_width // 2, John.x, John.canvas_width)
@@ -96,6 +94,7 @@ class RunState:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
             if John.y2 == John.y:
+                Sound.play_sound_effect(2)
                 John.y = John.y2
                 John.jump = 4.0
         elif event == UP_UP:
@@ -118,6 +117,7 @@ class RunState:
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
+        Sound.sets_sound_volume(Sound.sound_effect, 1, 80)
 
 
 
@@ -142,6 +142,8 @@ next_state_table = {
 class John:
 
     def __init__(self):
+        Sound.init()
+        Sound.repeated_play_sound_effect(1)
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.x, self.y = 100, 300
@@ -155,6 +157,7 @@ class John:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+
 
     def get_bb(self):
         return self.x - 18, self.y - 60, self.x + 18, self.y + 18
