@@ -5,10 +5,11 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import failure_state
 
 import world_build_state
 
-import menu_state
+import select_state
 
 name = "MainState"
 
@@ -37,7 +38,7 @@ def collide_up(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if top_a >= bottom_b:
+    if top_a >= bottom_b and a.y > a.y2:
         return True
 
 
@@ -45,7 +46,7 @@ def collide_down(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if bottom_a <= top_b:
+    if bottom_a <= top_b and a.y < a.y2:
         return True
 
 
@@ -53,7 +54,7 @@ def collide_left(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if left_a <= right_b:
+    if left_a <= right_b and a.x < a.x2:
         return True
 
 
@@ -61,14 +62,14 @@ def collide_right(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
-    if right_a >= left_b:
+    if right_a >= left_b and a.x > a.x2:
         return True
 
 
 def enter():
     global john, blocks, enemies, cannons, goals, traps
     john = world_build_state.get_john()
-    blocks, enemies, cannons, goals, traps = world_build_state.get_objects()
+    blocks, cannons, enemies, traps, goals = world_build_state.get_objects()
     #blocks.set_center_object(john)
     #john.set_background(world_build_state.get_world_size())
 
@@ -91,7 +92,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.change_state(menu_state)
+            game_framework.change_state(select_state)
         else:
             john.handle_event(event)
 
@@ -105,10 +106,32 @@ def update():
 
     for block in blocks:
         if collide(john, block):
+            if collide_left(john, block) or collide_right(john, block):
+                john.back_to_the_position_before_x()
             if collide_up(john, block) or collide_down(john, block):
                 john.back_to_the_position_before_y()
-            if collide_left(john,block) or collide_right(john,block):
+
+    for enemy in enemies:
+        if collide(john, enemy):
+            game_framework.change_state(failure_state)
+
+    for trap in traps:
+        if collide(john, trap):
+            game_framework.change_state(failure_state)
+
+    for cannon in cannons:
+        if collide(john, cannon):
+            if collide_left(john, cannon) or collide_right(john, cannon):
                 john.back_to_the_position_before_x()
+            if collide_up(john, cannon) or collide_down(john, cannon):
+                john.back_to_the_position_before_y()
+
+    for goal in goals:
+        if collide(john,goal):
+            pass
+
+    if john.y <= 0:
+        game_framework.change_state(failure_state)
 
 
 

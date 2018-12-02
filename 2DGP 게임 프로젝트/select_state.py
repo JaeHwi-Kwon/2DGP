@@ -6,7 +6,7 @@ from pico2d import *
 import game_framework
 import game_world
 import menu_state
-import main_state
+import world_build_state
 
 
 name = "SelectState"
@@ -44,7 +44,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
             stage -= 1
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
-            game_framework.change_state(main_state)
+            game_framework.change_state(world_build_state)
         stage = clamp(0, stage, 2)
 
 

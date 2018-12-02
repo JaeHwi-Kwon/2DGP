@@ -13,7 +13,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 16
 
 # John Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, UP_UP = range(6)
@@ -51,6 +51,7 @@ class IdleState:
         elif event == UP_DOWN:
             if John.y2 == John.y:
                 John.jump = 4.0
+                John.y = John.y2
         elif event == UP_UP:
             if John.jump > 0.0:
                 John.jump = 0.0
@@ -63,12 +64,13 @@ class IdleState:
     @staticmethod
     def do(John):
         John.y2 = John.y
-        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
+        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 7
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
 
-        John.x = clamp(John.canvas_width // 2, John.x, John.canvas_width)
+
+        #John.x = clamp(John.canvas_width // 2, John.x, John.canvas_width)
 
 
 
@@ -77,10 +79,7 @@ class IdleState:
 
     @staticmethod
     def draw(John):
-        if John.dir == 1:
-            John.image.clip_draw(int(John.frame) * 100, 300, 100, 100, John.x, John.y)
-        else:
-            John.image.clip_draw(int(John.frame) * 100, 200, 100, 100, John.x, John.y)
+        John.image[int(John.frame)].draw(John.x, John.y)
 
 
 class RunState:
@@ -97,6 +96,7 @@ class RunState:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
             if John.y2 == John.y:
+                John.y = John.y2
                 John.jump = 4.0
         elif event == UP_UP:
             if John.jump > 0.0:
@@ -112,7 +112,7 @@ class RunState:
     def do(John):
         John.y2 = John.y
         John.x2 = John.x
-        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
+        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 7
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
@@ -121,13 +121,14 @@ class RunState:
 
 
 
+
     @staticmethod
     def draw(John):
-        cx = John.canvas_width//2
+        #cx = John.canvas_width//2
         if John.dir == 1:
-            John.image.clip_draw(int(John.frame) * 100, 100, 100, 100, John.x, John.y)
+            John.image[int(John.frame) + 8].draw(John.x, John.y)
         else:
-            John.image.clip_draw(int(John.frame) * 100, 0, 100, 100, John.x, John.y)
+            John.image[int(John.frame) + 16].draw(John.x, John.y)
 
 
 next_state_table = {
@@ -145,7 +146,7 @@ class John:
         self.canvas_height = get_canvas_height()
         self.x, self.y = 100, 300
         self.x2, self.y2 = 100, 300
-        self.image = load_image('animation_sheet.png')
+        self.image = [load_image('./Image/main_stage/John/john %d.png' % i) for i in range(1, 24)]
         self.dir = 1
         self.velocity = 0
         self.frame = 0
@@ -156,10 +157,10 @@ class John:
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return self.x - 15, self.y - 30, self.x + 15, self.y + 30
+        return self.x - 18, self.y - 60, self.x + 18, self.y + 18
 
-    def set_background(self, bg):
-        self.x, self.y = bg
+    #def set_background(self, bg):
+    #    self.x, self.y = bg
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -181,6 +182,7 @@ class John:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:

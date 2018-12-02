@@ -16,7 +16,9 @@ from load_map import Enemy
 from load_map import Cannon
 from load_map import Goal
 from load_map import Trap
+from background import Background
 
+back = None
 john = None
 block = None
 enemy = None
@@ -40,6 +42,11 @@ menu = None
 
 
 def enter():
+
+    global back
+    back = Background()
+    game_world.add_object(back, 0)
+
     global john
     john = John()
     game_world.add_object(john, 1)
@@ -65,10 +72,12 @@ def enter():
                 game_world.add_object(enemy, 2)
                 pass
             elif stage_data_list[1][i][j] == TRAP:
+                trap = Trap(60 + 120 * j, 1020 - 120 * i)
                 traps.append(Trap(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(trap, 2)
                 pass
             elif stage_data_list[1][i][j] == GOAL:
+                goal = Goal(60 + 120 * j, 1020 - 120 * i)
                 goals.append(Goal(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(goal, 3)
             else:
@@ -118,6 +127,4 @@ def update():
 
 
 def draw():
-    clear_canvas()
-
-    update_canvas()
+    pass

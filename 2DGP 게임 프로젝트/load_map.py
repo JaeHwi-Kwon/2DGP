@@ -3,13 +3,14 @@ import game_framework
 import random
 import world_build_state
 
+LEFT, RIGHT = -1, 1
 
 class Block:
     image = None
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('block_normal.png')
+        self.image = load_image('./Image/main_stage/BLOCK_BASIC.png')
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -30,8 +31,8 @@ class Block:
 
         pass
 
-    def set_center_object(self, john):
-        pass
+    #def set_center_object(self, john):
+    #    pass
 
 
 class Enemy:
@@ -39,7 +40,8 @@ class Enemy:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('block_normal.png')
+        self.image = [load_image('./Image/main_stage/Enemy/monster %d.png' % i) for i in range(1, 8)]
+        self.frame = random.randint(0, 7)
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -53,10 +55,11 @@ class Enemy:
         self.__dict__.update(state)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image[int(self.frame)].draw(self.x, self.y)
         pass
 
     def update(self):
+        self.frame = (self.frame + game_framework.frame_time*10) % 7
         pass
 
 
@@ -65,7 +68,9 @@ class Cannon:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('cannon.png')
+        self.image = [load_image('./Image/main_stage/Cannon/cannon %d.png' % i) for i in range(1, 4)]
+        self.frame = random.randint(1, 4)
+        self.dir = LEFT
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -79,11 +84,11 @@ class Cannon:
         self.__dict__.update(state)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image[int(self.frame)].draw(self.x, self.y)
         pass
 
     def update(self):
-        pass
+        self.frame = (self.frame + game_framework.frame_time*10) % 3
 
 
 class Trap:
@@ -91,7 +96,8 @@ class Trap:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
-        self.image = load_image('trap.png')
+        self.image = [load_image('./Image/main_stage/Trap/trap %d.png' % i) for i in range(1, 4)]
+        self.frame = 1
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
@@ -105,11 +111,11 @@ class Trap:
         self.__dict__.update(state)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image[int(self.frame)].draw(self.x, self.y)
         pass
 
     def update(self):
-        pass
+        self.frame = (self.frame + game_framework.frame_time*10) % 3
 
 
 class Goal:
