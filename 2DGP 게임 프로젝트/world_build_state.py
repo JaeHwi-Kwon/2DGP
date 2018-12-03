@@ -76,8 +76,8 @@ def enter():
                 bullet.set_center_object(john)
                 cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
                 bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, -3))
-                game_world.add_object(cannon, 2)
-                game_world.add_object(bullet, 3)
+                game_world.add_object(cannon, 4)
+                game_world.add_object(bullet, 6)
             elif stage_data_list[1][i][j] == CANNON_R:
                 cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
                 bullet = Bullet(60 + 120 * j, 1020 - 120 * i, 3)
@@ -85,26 +85,26 @@ def enter():
                 bullet.set_center_object(john)
                 cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
                 bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, 3))
-                game_world.add_object(cannon, 2)
-                game_world.add_object(bullet, 3)
+                game_world.add_object(cannon, 5)
+                game_world.add_object(bullet, 6)
                 pass
             elif stage_data_list[1][i][j] == ENEMY:
                 enemy = Enemy(60 + 120 * j, 1020 - 120 * i)
                 enemy.set_center_object(john)
                 enemies.append(Enemy(60 + 120 * j, 1020 - 120 * i))
-                game_world.add_object(enemy, 4)
+                game_world.add_object(enemy, 3)
                 pass
             elif stage_data_list[1][i][j] == TRAP:
                 trap = Trap(60 + 120 * j, 1020 - 120 * i)
                 trap.set_center_object(john)
                 traps.append(Trap(60 + 120 * j, 1020 - 120 * i))
-                game_world.add_object(trap, 3)
+                game_world.add_object(trap, 7)
                 pass
             elif stage_data_list[1][i][j] == GOAL:
                 goal = Goal(60 + 120 * j, 1020 - 120 * i)
                 goal.set_center_object(john)
                 goals.append(Goal(60 + 120 * j, 1020 - 120 * i))
-                game_world.add_object(goal, 5)
+                game_world.add_object(goal, 8)
             else:
                 pass
 

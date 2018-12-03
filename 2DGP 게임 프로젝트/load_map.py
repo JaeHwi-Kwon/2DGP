@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import random
+import Sound
 import game_world
 import world_build_state
 
@@ -97,7 +98,7 @@ class Enemy:
         self.window_left, self.window_bottom = self.x - 60, self.y - 60
 
     def get_bb(self):
-        return self.x - 60, self.y - 60, self.x + 60, self.y + 60
+        return self.x - 55, self.y - 55, self.x + 55, self.y + 55
 
     def set_direction_opposite(self):
         self.velocity = -self.velocity
@@ -113,7 +114,7 @@ class Enemy:
         pass
 
     def update(self):
-        #self.x += self.velocity
+        self.x += self.velocity
         if self.center_object.x <= self.canvas_width/2:
             self.real_x = self.x - 60
         elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
@@ -171,6 +172,7 @@ class Bullet:
     image = None
 
     def __init__(self, x, y, velocity):
+        Sound.init()
         self.initx, self.inity = x, y
         self.x, self.y = x, y
         self.velocity = velocity
@@ -206,6 +208,8 @@ class Bullet:
             self.timer = 7.0
         self.timer -= game_framework.frame_time
         if self.timer <= 0:
+            Sound.play_sound_effect(4)
+            Sound.sets_sound_volume(Sound.sound_effect, 4, 10)
             self.x += self.velocity
             self.opacity = 1
         self.frame = (self.frame + game_framework.frame_time * 10) % 4

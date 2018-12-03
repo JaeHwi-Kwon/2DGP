@@ -18,7 +18,8 @@ black = None
 john = None
 blocks = []
 enemies = []
-cannons = []
+cannons_l = []
+cannons_r = []
 goals = []
 traps = []
 bullets = []
@@ -85,9 +86,15 @@ def collide_right_obj(a, b):
 def enter():
     global black
     black = load_image('./Image/main_stage/Background/background.png')
-    global john, blocks, enemies, cannons, goals, traps, bullets
+    global john, blocks, enemies, cannons_l, cannons_r, goals, traps, bullets
     john = world_build_state.get_john()
-    blocks, cannons, enemies, traps, goals, bullets = world_build_state.get_objects()
+    blocks = game_world.objects[2]
+    enemies = game_world.objects[3]
+    cannons_l = game_world.objects[4]
+    cannons_r = game_world.objects[5]
+    bullets = game_world.objects[6]
+    traps = game_world.objects[7]
+    goals = game_world.objects[8]
     Sound.init()
     Sound.play_background_sound(0)
 
@@ -123,6 +130,14 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+        blocks = game_world.objects[2]
+        enemies = game_world.objects[3]
+        cannons_l = game_world.objects[4]
+        cannons_r = game_world.objects[5]
+        bullets = game_world.objects[6]
+        traps = game_world.objects[7]
+        goals = game_world.objects[8]
+
     for block in blocks:
         if collide(john, block):
             if collide_left(john, block) or collide_right(john, block):
@@ -135,14 +150,21 @@ def update():
             game_framework.change_state(failure_state)
         for block in blocks:
             if collide(enemy, block):
-                if collide_left_obj(enemy,block) or collide_right_obj(enemy,block):
+                if collide_left_obj(enemy, block) or collide_right_obj(enemy, block):
                     enemy.set_direction_opposite()
 
     for trap in traps:
         if collide(john, trap):
             game_framework.change_state(failure_state)
 
-    for cannon in cannons:
+    for cannon in cannons_l:
+        if collide(john, cannon):
+            if collide_left(john, cannon) or collide_right(john, cannon):
+                john.back_to_the_position_before_x()
+            if collide_up(john, cannon) or collide_down(john, cannon):
+                john.back_to_the_position_before_y()
+
+    for cannon in cannons_r:
         if collide(john, cannon):
             if collide_left(john, cannon) or collide_right(john, cannon):
                 john.back_to_the_position_before_x()
