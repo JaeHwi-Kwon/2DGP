@@ -26,7 +26,7 @@ class Background:
             self.window_left, self.window_bottom,
             self.canvas_width, self.canvas_height,
             0, 0)
-        self.image[int(self.frame)].opacify(0.5)
+        self.image[int(self.frame)].opacify(0.3)
 
 
     def update(self):
@@ -62,14 +62,20 @@ class Block:
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
-            self.window_left-self.center_object.x, self.window_bottom)
+            self.real_x, self.window_bottom)
         pass
 
     def update(self):
-        self.frame = (self.frame + game_framework.frame_time*10) % 4
+        if self.center_object.x <= self.canvas_width/2:
+            self.real_x = self.x - 60
+        elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
+            self.real_x = self.x - 60 - self.canvas_width*2
+        else:
+            self.real_x = self.window_left - self.center_object.x + self.canvas_width//2 - 60
         self.window_left = clamp(self.x,
                                  int(self.center_object.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width)
+        self.frame = (self.frame + game_framework.frame_time * 10) % 4
         pass
 
 
@@ -98,14 +104,20 @@ class Enemy:
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
-            self.window_left - self.center_object.x, self.window_bottom)
+            self.real_x, self.window_bottom)
         pass
 
     def update(self):
-        self.frame = (self.frame + game_framework.frame_time*10) % 8
+        if self.center_object.x <= self.canvas_width/2:
+            self.real_x = self.x - 60
+        elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
+            self.real_x = self.x - 60 - self.canvas_width*2
+        else:
+            self.real_x = self.window_left - self.center_object.x + self.canvas_width//2 - 60
         self.window_left = clamp(self.x,
                                  int(self.center_object.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width)
+        self.frame = (self.frame + game_framework.frame_time * 10) % 8
         pass
 
 
@@ -133,11 +145,17 @@ class Cannon:
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
-            self.window_left - self.center_object.x, self.window_bottom)
+            self.real_x, self.window_bottom)
         pass
 
     def update(self):
         self.frame = (self.frame + game_framework.frame_time*10) % 4
+        if self.center_object.x <= self.canvas_width/2:
+            self.real_x = self.x - 60
+        elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
+            self.real_x = self.x - 60 - self.canvas_width*2
+        else:
+            self.real_x = self.window_left - self.center_object.x + self.canvas_width//2 - 60
         self.window_left = clamp(self.x,
                                  int(self.center_object.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width)
@@ -166,11 +184,17 @@ class Trap:
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
-            self.window_left - self.center_object.x, self.window_bottom)
+            self.real_x, self.window_bottom)
         pass
 
     def update(self):
         self.frame = (self.frame + game_framework.frame_time*10) % 4
+        if self.center_object.x <= self.canvas_width/2:
+            self.real_x = self.x - 60
+        elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
+            self.real_x = self.x - 60 - self.canvas_width*2
+        else:
+            self.real_x = self.window_left - self.center_object.x + self.canvas_width//2 - 60
         self.window_left = clamp(self.x,
                                  int(self.center_object.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width)
@@ -199,11 +223,17 @@ class Goal:
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
-            self.window_left - self.center_object.x, self.window_bottom)
+            self.real_x, self.window_bottom)
         pass
 
     def update(self):
         self.frame = (self.frame + game_framework.frame_time*10) % 6
+        if self.center_object.x <= self.canvas_width/2:
+            self.real_x = self.x - 60
+        elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
+            self.real_x = self.x - 60 - self.canvas_width*2
+        else:
+            self.real_x = self.window_left - self.center_object.x + self.canvas_width//2 - 60
         self.window_left = clamp(self.x,
                                  int(self.center_object.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width)

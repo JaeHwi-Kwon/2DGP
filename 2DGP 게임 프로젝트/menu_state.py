@@ -35,9 +35,9 @@ def enter():
     global black_back
     black_back = load_image('./Image/main_stage/Background/background.png')
 
-    #Sound.init()
-    #Sound.play_background_sound(2)
-    #Sound.sets_sound_volume(Sound.background_sound, 2, 80)
+    Sound.init()
+    Sound.play_background_sound(2)
+    Sound.sets_sound_volume(Sound.background_sound, 2, 80)
 
 
 def exit():

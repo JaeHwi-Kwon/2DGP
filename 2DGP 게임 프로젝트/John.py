@@ -113,7 +113,6 @@ class RunState:
         John.x2 = John.x
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.x += John.velocity * game_framework.frame_time
-        John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
