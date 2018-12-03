@@ -28,7 +28,7 @@ key_event_table = {
     (SDL_KEYUP, SDLK_UP): UP_UP
 }
 
-gravity = 0.03
+gravity = 0.5
 
 
 # John States
@@ -47,7 +47,7 @@ class IdleState:
         elif event == UP_DOWN:
             if John.y2 == John.y:
                 Sound.play_sound_effect(2)
-                John.jump = 4.0
+                John.jump = 17.0
                 John.y = John.y2
         elif event == UP_UP:
             if John.jump > 0.0:
@@ -63,7 +63,7 @@ class IdleState:
         John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.y += John.jump
         John.jump -= gravity
-        John.jump = clamp(-30.0, John.jump, 4.0)
+        John.jump = clamp(-30.0, John.jump, 100.0)
         Sound.sets_sound_volume(Sound.sound_effect, 1, 0)
 
 
@@ -96,7 +96,7 @@ class RunState:
             if John.y2 == John.y:
                 Sound.play_sound_effect(2)
                 John.y = John.y2
-                John.jump = 4.0
+                John.jump = 17.0
         elif event == UP_UP:
             if John.jump > 0.0:
                 John.jump = 0.0
@@ -158,7 +158,7 @@ class John:
 
 
     def get_bb(self):
-        return self.x - 18, self.y - 60, self.x + 18, self.y + 18
+        return self.x - 15, self.y - 60, self.x + 15, self.y + 18
 
     def set_background(self, bg):
         self.bg = bg
@@ -184,7 +184,6 @@ class John:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
