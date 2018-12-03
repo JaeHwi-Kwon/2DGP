@@ -1,8 +1,12 @@
 import pickle
 
 # layer 0: Background Objects
-# layer 1: Foreground Objects
-objects = [[], [], [], []]
+# layer 1: John
+# layer 2: Block Objects
+# layer 3: Damaged Objects
+# layer 4: Damaged Character Objects
+# layer 5: Goal Objects
+objects = [[], [], [], [], [], []]
 
 
 def add_object(o, layer):

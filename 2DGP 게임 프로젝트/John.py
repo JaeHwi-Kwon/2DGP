@@ -45,7 +45,6 @@ class IdleState:
         elif event == LEFT_UP:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
-            if John.y2 == John.y:
                 Sound.play_sound_effect(2)
                 John.jump = 17.0
                 John.y = John.y2
@@ -93,7 +92,6 @@ class RunState:
         elif event == LEFT_UP:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
-            if John.y2 == John.y:
                 Sound.play_sound_effect(2)
                 John.y = John.y2
                 John.jump = 17.0
@@ -159,6 +157,12 @@ class John:
 
     def get_bb(self):
         return self.x - 15, self.y - 60, self.x + 15, self.y + 18
+
+    def jump_toggle_true(self):
+        self.jump_toggle = True
+
+    def jump_toggle_false(self):
+        self. jump_toggle = False
 
     def set_background(self, bg):
         self.bg = bg
