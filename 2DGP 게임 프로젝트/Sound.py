@@ -8,8 +8,7 @@ def init():
     background_sound = [load_music('./Sound/night sound.wav'), load_music('./Sound/goal morning.wav'),
                         load_music('./Sound/main music.wav')]
     sound_effect = [load_wav('./Sound/menu select.wav'), load_wav('./Sound/john walking.wav'),
-                    load_wav('./Sound/john jump.wav'), load_wav('./Sound/john died.wav'),
-                    load_wav('./Sound/cannon shooting.wav'), load_wav('./Sound/failure state.wav')]
+                    load_wav('./Sound/john jump.wav'), load_wav('./Sound/failure state.wav')]
 
 
 def play_background_sound(number):

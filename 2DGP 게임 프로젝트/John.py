@@ -45,9 +45,11 @@ class IdleState:
         elif event == LEFT_UP:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
+            if John.jump_toggle == True:
                 Sound.play_sound_effect(2)
                 John.jump = 17.0
                 John.y = John.y2
+                John.jump_toggle = False
         elif event == UP_UP:
             if John.jump > 0.0:
                 John.jump = 0.0
@@ -64,7 +66,8 @@ class IdleState:
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 100.0)
         Sound.sets_sound_volume(Sound.sound_effect, 1, 0)
-
+        if John.y2 == John.y:
+            John.jump_toggle = True
 
         John.x = clamp(0,John.x,John.bg.w)
 
@@ -92,9 +95,11 @@ class RunState:
         elif event == LEFT_UP:
             John.velocity += RUN_SPEED_PPS
         elif event == UP_DOWN:
+            if John.jump_toggle:
                 Sound.play_sound_effect(2)
                 John.y = John.y2
                 John.jump = 17.0
+                John.jump_toggle = False
         elif event == UP_UP:
             if John.jump > 0.0:
                 John.jump = 0.0
@@ -114,6 +119,8 @@ class RunState:
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
+        if John.y2 == John.y:
+            John.jump_toggle = True
         Sound.sets_sound_volume(Sound.sound_effect, 1, 80)
 
         John.x = clamp(0, John.x, John.bg.w)
@@ -137,19 +144,19 @@ next_state_table = {
 
 class John:
 
-    def __init__(self):
+    def __init__(self, x, y):
         Sound.init()
         Sound.repeated_play_sound_effect(1)
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
-        self.x, self.y = 100, 300
-        self.x2, self.y2 = 100, 300
+        self.x, self.y = x, y
+        self.x2, self.y2 = x, y
         self.image = [load_image('./Image/main_stage/John/john %d.png' % i) for i in range(1, 25)]
         self.dir = 1
         self.velocity = 0
         self.frame = 0
         self.jump = 0
-        self.jump_toggle = True
+        self.jump_toggle = False
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -166,7 +173,6 @@ class John:
 
     def set_background(self, bg):
         self.bg = bg
-        self.x = self.bg.w / 2
 
     def add_event(self, event):
         self.event_que.insert(0, event)

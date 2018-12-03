@@ -8,6 +8,7 @@ from main_menu import Menu
 import select_state
 import world_build_state
 import Sound
+import selection
 
 PLAY, LOAD, QUIT = 1, 2, 3
 
@@ -68,6 +69,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
             Sound.play_sound_effect(0)
             if select.selected == PLAY:
+                selection.selection = 1
                 game_framework.change_state(world_build_state)
             elif select.selected == LOAD:
                 game_framework.change_state(select_state)

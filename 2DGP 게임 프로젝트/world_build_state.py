@@ -5,8 +5,8 @@ import os
 
 from pico2d import *
 import game_framework
-import main_state
 import game_world
+import selection
 
 import main_state
 
@@ -37,8 +37,10 @@ goals = []
 bullets = []
 
 BLANK, BLOCK, ENEMY, CANNON_L, CANNON_R, TRAP, GOAL = range(7)
+JOHN = 9
 BLOCK_WIDTH = 120
 BLOCK_HEIGHT = 120
+LEFT, RIGHT = 0, 1
 
 name = "WorldBuildState"
 
@@ -46,20 +48,33 @@ menu = None
 
 
 def enter():
-
+    stage = selection.get_selection()
     global back
     back = Background()
     game_world.add_object(back, 0)
 
-    global john
-    john = John()
-    game_world.add_object(john, 1)
+    if stage == 1:
+        with open('./Stage/first_stage_data.json', 'r') as f:
+            stage_data_list = json.load(f)
+    elif stage == 2:
+        with open('./Stage/second_stage_data.json', 'r') as f:
+            stage_data_list = json.load(f)
+    elif stage == 3:
+        with open('./Stage/third_stage_data.json', 'r') as f:
+            stage_data_list = json.load(f)
+    elif stage == 4:
+        with open('./Stage/fourth_stage_data.json', 'r') as f:
+            stage_data_list = json.load(f)
 
-    back.set_center_object(john)
-    john.set_background(back)
 
-    with open('first_stage_data.json', 'r') as f:
-        stage_data_list = json.load(f)
+    for i in range(stage_data_list[0][0]):
+        for j in range(stage_data_list[0][1]):
+            if stage_data_list[1][i][j] == JOHN:
+                global john
+                john = John(60 + 120 * j, 1020 - 120 * i)
+                game_world.add_object(john, 1)
+                back.set_center_object(john)
+                john.set_background(back)
 
     for i in range(stage_data_list[0][0]):
         for j in range(stage_data_list[0][1]):
@@ -70,20 +85,20 @@ def enter():
                 game_world.add_object(block, 2)
                 pass
             elif stage_data_list[1][i][j] == CANNON_L:
-                cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                cannon = Cannon(60 + 120 * j, 1020 - 120 * i, LEFT)
                 bullet = Bullet(60 + 120 * j, 1020 - 120 * i, -3)
                 cannon.set_center_object(john)
                 bullet.set_center_object(john)
-                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
+                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i, LEFT))
                 bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, -3))
                 game_world.add_object(cannon, 4)
                 game_world.add_object(bullet, 6)
             elif stage_data_list[1][i][j] == CANNON_R:
-                cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                cannon = Cannon(60 + 120 * j, 1020 - 120 * i, RIGHT)
                 bullet = Bullet(60 + 120 * j, 1020 - 120 * i, 3)
                 cannon.set_center_object(john)
                 bullet.set_center_object(john)
-                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
+                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i, RIGHT))
                 bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, 3))
                 game_world.add_object(cannon, 5)
                 game_world.add_object(bullet, 6)
@@ -128,11 +143,6 @@ def get_john():
 
 def get_objects():
     return blocks, cannons, enemies, traps, goals, bullets
-
-def get_world_size():
-    with open('first_stage_data.json', 'r') as f:
-        stage_data_list = json.load(f)
-    return stage_data_list[0][0] * BLOCK_WIDTH, stage_data_list[0][1] * BLOCK_HEIGHT
 
 
 def create_new_world():

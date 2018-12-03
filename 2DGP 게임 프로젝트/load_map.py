@@ -2,8 +2,6 @@ from pico2d import *
 import game_framework
 import random
 import Sound
-import game_world
-import world_build_state
 
 LEFT, RIGHT = 0, 1
 
@@ -131,13 +129,13 @@ class Enemy:
 class Cannon:
     image = None
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, dir):
         self.x, self.y = x, y
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.image = [load_image('./Image/main_stage/Cannon/cannon %d.png' % i) for i in range(1, 9)]
         self.frame = random.randint(1, 4)
-        self.dir = LEFT
+        self.dir = dir
         self.w = self.image[0].w
         self.h = self.image[0].h
         self.window_left, self.window_bottom = self.x - 60, self.y - 60
@@ -208,8 +206,6 @@ class Bullet:
             self.timer = 7.0
         self.timer -= game_framework.frame_time
         if self.timer <= 0:
-            Sound.play_sound_effect(4)
-            Sound.sets_sound_volume(Sound.sound_effect, 4, 10)
             self.x += self.velocity
             self.opacity = 1
         self.frame = (self.frame + game_framework.frame_time * 10) % 4
