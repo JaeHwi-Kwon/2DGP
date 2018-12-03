@@ -21,7 +21,7 @@ enemies = []
 cannons = []
 goals = []
 traps = []
-
+bullets = []
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -66,15 +66,28 @@ def collide_right(a, b):
     if right_a >= left_b and a.x > a.x2:
         return True
 
+def collide_left_obj(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a <= right_b:
+        return True
+
+
+def collide_right_obj(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if right_a >= left_b:
+        return True
+
 
 def enter():
     global black
     black = load_image('./Image/main_stage/Background/background.png')
-    global john, blocks, enemies, cannons, goals, traps
+    global john, blocks, enemies, cannons, goals, traps, bullets
     john = world_build_state.get_john()
-    blocks, cannons, enemies, traps, goals = world_build_state.get_objects()
-    #blocks.set_center_object(john)
-    #john.set_background(world_build_state.get_world_size())
+    blocks, cannons, enemies, traps, goals, bullets = world_build_state.get_objects()
     Sound.init()
     Sound.play_background_sound(0)
 
@@ -120,6 +133,10 @@ def update():
     for enemy in enemies:
         if collide(john, enemy):
             game_framework.change_state(failure_state)
+        for block in blocks:
+            if collide(enemy, block):
+                if collide_left_obj(enemy,block) or collide_right_obj(enemy,block):
+                    enemy.set_direction_opposite()
 
     for trap in traps:
         if collide(john, trap):
@@ -131,6 +148,10 @@ def update():
                 john.back_to_the_position_before_x()
             if collide_up(john, cannon) or collide_down(john, cannon):
                 john.back_to_the_position_before_y()
+
+    for bullet in bullets:
+        if collide(john, bullet):
+            game_framework.change_state(failure_state)
 
     for goal in goals:
         if collide(john, goal):
@@ -146,6 +167,7 @@ def draw():
     clear_canvas()
     global black
     black.draw(1920 * 3 / 2, 1080 / 2)
+    black.opacify(0.95)
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()

@@ -17,6 +17,7 @@ from load_map import Cannon
 from load_map import Goal
 from load_map import Trap
 from load_map import Background
+from load_map import Bullet
 
 black = None
 back = None
@@ -26,14 +27,16 @@ enemy = None
 cannon = None
 goal = None
 trap = None
+bullet = None
 
 blocks = []
 enemies = []
 cannons = []
 traps = []
 goals = []
+bullets = []
 
-BLANK, BLOCK, ENEMY, CANNON, TRAP, GOAL = range(6)
+BLANK, BLOCK, ENEMY, CANNON_L, CANNON_R, TRAP, GOAL = range(7)
 BLOCK_WIDTH = 120
 BLOCK_HEIGHT = 120
 
@@ -66,11 +69,24 @@ def enter():
                 blocks.append(Block(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(block, 1)
                 pass
-            elif stage_data_list[1][i][j] == CANNON:
+            elif stage_data_list[1][i][j] == CANNON_L:
                 cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                bullet = Bullet(60 + 120 * j, 1020 - 120 * i, -3)
                 cannon.set_center_object(john)
+                bullet.set_center_object(john)
                 cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
+                bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, -3))
                 game_world.add_object(cannon, 1)
+                game_world.add_object(bullet, 2)
+            elif stage_data_list[1][i][j] == CANNON_R:
+                cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                bullet = Bullet(60 + 120 * j, 1020 - 120 * i, 3)
+                cannon.set_center_object(john)
+                bullet.set_center_object(john)
+                cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
+                bullets.append(Bullet(60 + 120 * j, 1020 - 120 * i, 3))
+                game_world.add_object(cannon, 1)
+                game_world.add_object(bullet, 2)
                 pass
             elif stage_data_list[1][i][j] == ENEMY:
                 enemy = Enemy(60 + 120 * j, 1020 - 120 * i)
@@ -111,7 +127,7 @@ def get_john():
 
 
 def get_objects():
-    return blocks, cannons, enemies, traps, goals
+    return blocks, cannons, enemies, traps, goals, bullets
 
 def get_world_size():
     with open('first_stage_data.json', 'r') as f:

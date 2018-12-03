@@ -87,6 +87,7 @@ class Enemy:
 
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.velocity = 3
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.image = [load_image('./Image/main_stage/Enemy/monster %d.png' % i) for i in range(1, 9)]
@@ -97,6 +98,9 @@ class Enemy:
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
+
+    def set_direction_opposite(self):
+        self.velocity = -self.velocity
 
     def set_center_object(self, john):
         self.center_object = john
@@ -109,6 +113,7 @@ class Enemy:
         pass
 
     def update(self):
+        #self.x += self.velocity
         if self.center_object.x <= self.canvas_width/2:
             self.real_x = self.x - 60
         elif self.center_object.x >= self.canvas_width*3-self.canvas_width/2:
@@ -135,19 +140,9 @@ class Cannon:
         self.w = self.image[0].w
         self.h = self.image[0].h
         self.window_left, self.window_bottom = self.x - 60, self.y - 60
-        self.timer = 7.0
 
     def get_bb(self):
         return self.x - 60, self.y - 60, self.x + 60, self.y + 60
-
-    def fire_ball(self):
-        if self.dir == LEFT:
-            bullet = Bullet(self.x, self.y, -1, self.center_object)
-            game_world.add_object(bullet, 2)
-        else:
-            bullet = Bullet(self.x, self.y, 1, self.center_object)
-            game_world.add_object(bullet, 2)
-        pass
 
     def set_center_object(self, john):
         self.center_object = john
@@ -160,10 +155,6 @@ class Cannon:
         pass
 
     def update(self):
-        self.timer -= game_framework.frame_time
-        if self.timer <= 0:
-            self.fire_ball()
-            self.timer = 3.0
         self.frame = (self.frame + game_framework.frame_time*10) % 4 + self.dir*4
         if self.center_object.x <= self.canvas_width/2:
             self.real_x = self.x - 60
@@ -179,30 +170,44 @@ class Cannon:
 class Bullet:
     image = None
 
-    def __init__(self, x, y, velocity, center_object):
+    def __init__(self, x, y, velocity):
+        self.initx, self.inity = x, y
         self.x, self.y = x, y
-        self.center_object = center_object
         self.velocity = velocity
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.image = [load_image('./Image/main_stage/Cannon/Bullet/bullet %d.png' % i) for i in range(1, 5)]
         self.frame = 1
+        self.opacity = 0
+        self.timer = 7.0
         self.w = self.image[0].w
         self.h = self.image[0].h
         self.window_left, self.window_bottom = self.x - 60, self.y - 60
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - 60, self.y - 60, self.x + 60, self.y + 60
+
+    def set_center_object(self, john):
+        self.center_object = john
+        pass
 
     def draw(self):
         self.image[int(self.frame)].clip_draw_to_origin(
             0, 0,
             self.w, self.h,
             self.real_x, self.window_bottom)
+        self.image[int(self.frame)].opacify(self.opacity)
         pass
 
     def update(self):
-        self.x += self.velocity*3
+        if self.x <= -60 and self.velocity < 0 or self.x >= 1920*3 + 60 and self.velocity > 0:
+            self.x = self.initx
+            self.opacity = 0
+            self.timer = 7.0
+        self.timer -= game_framework.frame_time
+        if self.timer <= 0:
+            self.x += self.velocity
+            self.opacity = 1
         self.frame = (self.frame + game_framework.frame_time * 10) % 4
         if self.center_object.x <= self.canvas_width / 2:
             self.real_x = self.x - 60
