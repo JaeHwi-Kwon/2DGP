@@ -14,7 +14,7 @@ import failure_state
 
 name = "MainState"
 
-
+black = None
 john = None
 blocks = []
 enemies = []
@@ -68,6 +68,8 @@ def collide_right(a, b):
 
 
 def enter():
+    global black
+    black = load_image('./Image/main_stage/Background/background.png')
     global john, blocks, enemies, cannons, goals, traps
     john = world_build_state.get_john()
     blocks, cannons, enemies, traps, goals = world_build_state.get_objects()
@@ -142,6 +144,8 @@ def update():
 
 def draw():
     clear_canvas()
+    global black
+    black.draw(1920 * 3 / 2, 1080 / 2)
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()

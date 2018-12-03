@@ -55,20 +55,19 @@ class IdleState:
 
     @staticmethod
     def exit(John, event):
-        # fill here
         pass
 
     @staticmethod
     def do(John):
         John.y2 = John.y
-        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 7
+        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.y += John.jump
         John.jump -= gravity
         John.jump = clamp(-30.0, John.jump, 4.0)
         Sound.sets_sound_volume(Sound.sound_effect, 1, 0)
 
 
-        #John.x = clamp(John.canvas_width // 2, John.x, John.canvas_width)
+        John.x = clamp(0,John.x,John.bg.w)
 
 
 
@@ -77,7 +76,8 @@ class IdleState:
 
     @staticmethod
     def draw(John):
-        John.image[int(John.frame)].draw(John.x, John.y)
+        cx = John.x - John.bg.window_left
+        John.image[int(John.frame)].draw(cx, John.y)
 
 
 class RunState:
@@ -111,7 +111,7 @@ class RunState:
     def do(John):
         John.y2 = John.y
         John.x2 = John.x
-        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 7
+        John.frame = (John.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 8
         John.x += John.velocity * game_framework.frame_time
         John.x = clamp(25, John.x, 1920 - 25)
         John.y += John.jump
@@ -119,16 +119,15 @@ class RunState:
         John.jump = clamp(-30.0, John.jump, 4.0)
         Sound.sets_sound_volume(Sound.sound_effect, 1, 80)
 
-
-
+        John.x = clamp(0, John.x, John.bg.w)
 
     @staticmethod
     def draw(John):
-        #cx = John.canvas_width//2
+        cx = John.x - John.bg.window_left
         if John.dir == 1:
-            John.image[int(John.frame) + 8].draw(John.x, John.y)
+            John.image[int(John.frame) + 8].draw(cx, John.y)
         else:
-            John.image[int(John.frame) + 16].draw(John.x, John.y)
+            John.image[int(John.frame) + 16].draw(cx, John.y)
 
 
 next_state_table = {
@@ -148,7 +147,7 @@ class John:
         self.canvas_height = get_canvas_height()
         self.x, self.y = 100, 300
         self.x2, self.y2 = 100, 300
-        self.image = [load_image('./Image/main_stage/John/john %d.png' % i) for i in range(1, 24)]
+        self.image = [load_image('./Image/main_stage/John/john %d.png' % i) for i in range(1, 25)]
         self.dir = 1
         self.velocity = 0
         self.frame = 0
@@ -162,8 +161,9 @@ class John:
     def get_bb(self):
         return self.x - 18, self.y - 60, self.x + 18, self.y + 18
 
-    #def set_background(self, bg):
-    #    self.x, self.y = bg
+    def set_background(self, bg):
+        self.bg = bg
+        self.x = self.bg.w / 2
 
     def add_event(self, event):
         self.event_que.insert(0, event)

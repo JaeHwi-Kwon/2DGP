@@ -16,8 +16,9 @@ from load_map import Enemy
 from load_map import Cannon
 from load_map import Goal
 from load_map import Trap
-from background import Background
+from load_map import Background
 
+black = None
 back = None
 john = None
 block = None
@@ -51,6 +52,9 @@ def enter():
     john = John()
     game_world.add_object(john, 1)
 
+    back.set_center_object(john)
+    john.set_background(back)
+
     with open('first_stage_data.json', 'r') as f:
         stage_data_list = json.load(f)
 
@@ -58,26 +62,31 @@ def enter():
         for j in range(stage_data_list[0][1]):
             if stage_data_list[1][i][j] == BLOCK:
                 block = Block(60 + 120 * j, 1020 - 120 * i)
+                block.set_center_object(john)
                 blocks.append(Block(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(block, 1)
                 pass
             elif stage_data_list[1][i][j] == CANNON:
                 cannon = Cannon(60 + 120 * j, 1020 - 120 * i)
+                cannon.set_center_object(john)
                 cannons.append(Cannon(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(cannon, 1)
                 pass
             elif stage_data_list[1][i][j] == ENEMY:
                 enemy = Enemy(60 + 120 * j, 1020 - 120 * i)
+                enemy.set_center_object(john)
                 enemies.append(Enemy(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(enemy, 2)
                 pass
             elif stage_data_list[1][i][j] == TRAP:
                 trap = Trap(60 + 120 * j, 1020 - 120 * i)
+                trap.set_center_object(john)
                 traps.append(Trap(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(trap, 2)
                 pass
             elif stage_data_list[1][i][j] == GOAL:
                 goal = Goal(60 + 120 * j, 1020 - 120 * i)
+                goal.set_center_object(john)
                 goals.append(Goal(60 + 120 * j, 1020 - 120 * i))
                 game_world.add_object(goal, 3)
             else:

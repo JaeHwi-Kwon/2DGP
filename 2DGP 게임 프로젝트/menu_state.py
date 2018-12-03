@@ -16,6 +16,7 @@ name = "MenuState"
 menu = None
 select = None
 black = None
+black_back = None
 
 
 def enter():
@@ -30,6 +31,9 @@ def enter():
     global black
     black = Blackscreen()
     game_world.add_object(black, 0)
+
+    global black_back
+    black_back = load_image('./Image/main_stage/Background/background.png')
 
     #Sound.init()
     #Sound.play_background_sound(2)
@@ -64,9 +68,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
             Sound.play_sound_effect(0)
             if select.selected == PLAY:
-                game_framework.push_state(world_build_state)
+                game_framework.change_state(world_build_state)
             elif select.selected == LOAD:
-                game_framework.push_state(select_state)
+                game_framework.change_state(select_state)
             elif select.selected == QUIT:
                 game_framework.quit()
 
@@ -79,6 +83,8 @@ def update():
 
 def draw():
     clear_canvas()
+    global black_back
+    black_back.draw(1920*3/2, 1080/2)
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()
